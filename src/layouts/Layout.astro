@@ -4,7 +4,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Get verified B2B leads with real decision-maker emails. Scrape, enrich, and verify - all in one platform.' } = Astro.props;
+const { title, description = 'Pull verified B2B leads from Google Maps. Owner emails, not generic contacts. Scrape, enrich, verify - one platform.' } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -13,13 +13,14 @@ const { title, description = 'Get verified B2B leads with real decision-maker em
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#050508" />
+    <meta name="theme-color" content="#09090b" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://pullleads.com" />
+    <meta property="og:image" content="https://pullleads.com/og-image.png" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -28,6 +29,7 @@ const { title, description = 'Get verified B2B leads with real decision-maker em
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://pullleads.com" />
 
     <title>{title}</title>
   </head>
@@ -35,10 +37,10 @@ const { title, description = 'Get verified B2B leads with real decision-maker em
     <!-- Animated background -->
     <div class="grid-bg" aria-hidden="true"></div>
     <div class="particles" aria-hidden="true">
-      {Array.from({ length: 20 }).map((_, i) => (
+      {Array.from({ length: 15 }).map((_, i) => (
         <span
           class="particle"
-          style={`left: ${Math.random() * 100}%; animation-delay: ${Math.random() * 8}s; animation-duration: ${6 + Math.random() * 4}s;`}
+          style={`left: ${Math.random() * 100}%; animation-delay: ${Math.random() * 12}s; animation-duration: ${10 + Math.random() * 6}s;`}
         />
       ))}
     </div>

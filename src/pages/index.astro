@@ -8,7 +8,7 @@ import Pricing from '../components/Pricing.astro';
 import Testimonials from '../components/Testimonials.astro';
 ---
 
-<Layout title="LeadFlow - B2B Lead Generation That Actually Works">
+<Layout title="PullLeads - B2B Lead Generation That Actually Works">
   <Header />
   <main>
     <Hero />
@@ -17,13 +17,26 @@ import Testimonials from '../components/Testimonials.astro';
     <Pricing />
     <Testimonials />
   </main>
-  
+
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
-          <span class="logo">Lead<span class="text-cyan">Flow</span></span>
-          <p class="footer-tagline">B2B leads that convert.</p>
+          <a href="/" class="footer-logo">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="28" height="28" rx="7" fill="url(#footer-logo-gradient)" />
+              <path d="M9 10L14 7L19 10V14L14 17L9 14V10Z" fill="#09090b" />
+              <path d="M14 17V21L19 18V14" fill="#09090b" fill-opacity="0.6" />
+              <defs>
+                <linearGradient id="footer-logo-gradient" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#6366f1" />
+                  <stop offset="1" stop-color="#a855f7" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <span>PullLeads</span>
+          </a>
+          <p class="footer-tagline">B2B leads that actually convert.</p>
         </div>
         <div class="footer-links">
           <a href="#features">Features</a>
@@ -31,7 +44,7 @@ import Testimonials from '../components/Testimonials.astro';
           <a href="#how-it-works">How it Works</a>
         </div>
         <div class="footer-legal">
-          <p>&copy; 2026 LeadFlow. All rights reserved.</p>
+          <p>&copy; 2026 PullLeads. All rights reserved.</p>
         </div>
       </div>
     </div>
@@ -40,12 +53,14 @@ import Testimonials from '../components/Testimonials.astro';
 
 <style>
   .footer {
-    background: var(--surface-1);
-    border-top: 1px solid var(--surface-2);
+    position: relative;
+    z-index: 2;
+    background: var(--bg-surface);
+    border-top: var(--border-subtle);
     padding: 3rem 0;
-    margin-top: 6rem;
+    margin-top: 4rem;
   }
-  
+
   .footer-content {
     display: flex;
     flex-direction: column;
@@ -53,43 +68,56 @@ import Testimonials from '../components/Testimonials.astro';
     gap: 1.5rem;
     text-align: center;
   }
-  
-  .footer-brand .logo {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
     font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
   }
-  
+
   .footer-tagline {
     color: var(--text-muted);
+    font-size: 0.875rem;
     margin-top: 0.5rem;
   }
-  
+
   .footer-links {
     display: flex;
     gap: 2rem;
   }
-  
+
   .footer-links a {
     color: var(--text-muted);
     text-decoration: none;
-    transition: color 0.2s;
+    font-size: 0.875rem;
+    transition: color var(--transition-fast);
   }
-  
+
   .footer-links a:hover {
-    color: var(--cyan);
+    color: var(--text-primary);
   }
-  
+
   .footer-legal {
     color: var(--text-muted);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
   }
-  
+
   @media (min-width: 768px) {
     .footer-content {
       flex-direction: row;
       justify-content: space-between;
       text-align: left;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>
