@@ -4,7 +4,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Pull verified B2B leads from Google Maps. Owner emails, not generic contacts. Scrape, enrich, verify - one platform.' } = Astro.props;
+const { title, description = 'PullLeads - The verified B2B lead generation platform.' } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -13,64 +13,35 @@ const { title, description = 'Pull verified B2B leads from Google Maps. Owner em
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#09090b" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://pullleads.com" />
-    <meta property="og:image" content="https://pullleads.com/og-image.png" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href="https://pullleads.com" />
-
+    <meta name="theme-color" content="#030304" />
     <title>{title}</title>
   </head>
   <body>
-    <!-- Animated background -->
-    <div class="grid-bg" aria-hidden="true"></div>
-    <div class="particles" aria-hidden="true">
-      {Array.from({ length: 15 }).map((_, i) => (
-        <span
-          class="particle"
-          style={`left: ${Math.random() * 100}%; animation-delay: ${Math.random() * 12}s; animation-duration: ${10 + Math.random() * 6}s;`}
-        />
-      ))}
-    </div>
-
+    <!-- Ambient Background Lighting -->
+    <div class="ambient-light main"></div>
+    <div class="ambient-light secondary"></div>
+    
     <slot />
 
     <script>
-      // Intersection Observer for scroll animations
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-      );
+      // Simple Intersection Observer for scroll animations
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
 
-      document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
-
-      // Smooth scroll for anchor links
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener('click', (e) => {
-          e.preventDefault();
-          const target = document.querySelector(anchor.getAttribute('href'));
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
           }
         });
+      }, observerOptions);
+
+      document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+        observer.observe(el);
       });
     </script>
   </body>
@@ -78,4 +49,29 @@ const { title, description = 'Pull verified B2B leads from Google Maps. Owner em
 
 <style is:global>
   @import '../styles/global.css';
+
+  .ambient-light {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .ambient-light.main {
+    top: -20%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.3) 0%, transparent 70%);
+  }
+
+  .ambient-light.secondary {
+    bottom: -20%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, transparent 70%);
+  }
 </style>

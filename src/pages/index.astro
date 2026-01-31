@@ -8,116 +8,160 @@ import Pricing from '../components/Pricing.astro';
 import Testimonials from '../components/Testimonials.astro';
 ---
 
-<Layout title="PullLeads - B2B Lead Generation That Actually Works">
+<Layout title="PullLeads | B2B Lead Extraction & Verification">
   <Header />
+  
   <main>
     <Hero />
     <Features />
     <HowItWorks />
-    <Pricing />
     <Testimonials />
+    <Pricing />
+    
+    <!-- CTA Section -->
+    <section class="cta-section relative overflow-hidden">
+      <div class="container text-center relative z-10">
+        <h2 class="mb-6">Ready to scale your outreach?</h2>
+        <p class="mb-8 max-w-xl mx-auto text-lg text-secondary">
+          Join the private beta and get 500 free credits today. No credit card required.
+        </p>
+        <a href="#start" class="btn btn-primary btn-lg">Start Extracting Now</a>
+      </div>
+      
+      <!-- Ambient Glow for Footer -->
+      <div class="footer-glow"></div>
+    </section>
   </main>
 
-  <footer class="footer">
+  <footer class="site-footer">
     <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <a href="/" class="footer-logo">
-            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="28" height="28" rx="7" fill="url(#footer-logo-gradient)" />
-              <path d="M9 10L14 7L19 10V14L14 17L9 14V10Z" fill="#09090b" />
-              <path d="M14 17V21L19 18V14" fill="#09090b" fill-opacity="0.6" />
-              <defs>
-                <linearGradient id="footer-logo-gradient" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#6366f1" />
-                  <stop offset="1" stop-color="#a855f7" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <span>PullLeads</span>
-          </a>
-          <p class="footer-tagline">B2B leads that actually convert.</p>
+      <div class="footer-grid">
+        <div class="brand">
+          <span class="logo-text">PullLeads.</span>
+          <p>The modern data engine for growth teams.</p>
         </div>
-        <div class="footer-links">
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#how-it-works">How it Works</a>
+        <div class="links">
+          <h4>Product</h4>
+          <a href="#">Features</a>
+          <a href="#">Pricing</a>
+          <a href="#">API</a>
         </div>
-        <div class="footer-legal">
-          <p>&copy; 2026 PullLeads. All rights reserved.</p>
+        <div class="links">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
         </div>
+        <div class="links">
+          <h4>Legal</h4>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2026 PullLeads Inc. All rights reserved.
       </div>
     </div>
   </footer>
 </Layout>
 
 <style>
-  .footer {
+  main {
+    overflow-x: hidden;
+  }
+
+  /* Utilities */
+  .mb-6 { margin-bottom: 1.5rem; }
+  .mb-8 { margin-bottom: 2rem; }
+  .text-lg { font-size: 1.125rem; }
+  .relative { position: relative; }
+  .overflow-hidden { overflow: hidden; }
+  .z-10 { z-index: 10; }
+  .text-center { text-align: center; }
+  .max-w-xl { max-width: 36rem; }
+  .mx-auto { margin-left: auto; margin-right: auto; }
+
+  .cta-section {
+    padding: 8rem 0;
     position: relative;
-    z-index: 2;
-    background: var(--bg-surface);
-    border-top: var(--border-subtle);
-    padding: 3rem 0;
-    margin-top: 4rem;
+    border-top: 1px solid var(--border-subtle);
   }
 
-  .footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    text-align: center;
+  .footer-glow {
+    position: absolute;
+    bottom: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
   }
 
-  .footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
+  .btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 4rem 0 2rem;
+    background: var(--bg-secondary);
+    font-size: 0.9rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .brand .logo-text {
+    font-family: 'Outfit', sans-serif;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    display: block;
+    margin-bottom: 1rem;
   }
 
-  .footer-tagline {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
+  .brand p {
+    color: var(--text-secondary);
+    max-width: 200px;
   }
 
-  .footer-links {
-    display: flex;
-    gap: 2rem;
+  .links h4 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
   }
 
-  .footer-links a {
-    color: var(--text-muted);
+  .links a {
+    display: block;
+    color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.875rem;
-    transition: color var(--transition-fast);
+    margin-bottom: 0.75rem;
+    transition: color 0.2s;
   }
 
-  .footer-links a:hover {
+  .links a:hover {
     color: var(--text-primary);
   }
 
-  .footer-legal {
+  .copyright {
+    text-align: center;
     color: var(--text-muted);
     font-size: 0.8rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
   }
 
-  @media (min-width: 768px) {
-    .footer-content {
-      flex-direction: row;
-      justify-content: space-between;
-      text-align: left;
-    }
-
-    .footer-brand {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
     }
   }
 </style>

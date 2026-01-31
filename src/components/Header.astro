@@ -1,165 +1,122 @@
 ---
 ---
-
-<header class="header">
+<header class="site-header">
   <div class="container">
-    <a href="/" class="logo">
-      <div class="logo-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="28" height="28" rx="7" fill="url(#logo-gradient)" />
-          <path d="M9 10L14 7L19 10V14L14 17L9 14V10Z" fill="#09090b" />
-          <path d="M14 17V21L19 18V14" fill="#09090b" fill-opacity="0.6" />
-          <defs>
-            <linearGradient id="logo-gradient" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#6366f1" />
-              <stop offset="1" stop-color="#a855f7" />
-            </linearGradient>
-          </defs>
-        </svg>
+    <div class="nav-island glass-panel">
+      <a href="/" class="logo">
+        PullLeads<span class="dot">.</span>
+      </a>
+
+      <nav class="desktop-nav">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://app.pullleads.com/login" class="login-link">Login</a>
+        <a href="#get-started" class="btn btn-primary btn-sm">Get Started</a>
       </div>
-      <span>PullLeads</span>
-    </a>
-
-    <nav class="nav" id="nav">
-      <a href="#features">Features</a>
-      <a href="#how-it-works">How it Works</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#testimonials">Reviews</a>
-    </nav>
-
-    <div class="header-actions">
-      <a href="#waitlist" class="btn btn-primary">Get Early Access</a>
+      
+      <!-- Mobile Toggle -->
+      <button class="mobile-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+      </button>
     </div>
-
-    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
   </div>
 </header>
 
 <style>
-  .header {
+  .site-header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
-    padding: 1rem 0;
-    background: rgba(9, 9, 11, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: var(--border-subtle);
+    z-index: 50;
+    padding-top: 1.5rem;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
   }
 
-  .header .container {
+  .nav-island {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px; /* Pill shape */
+    transition: all 0.3s ease;
   }
 
   .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    text-decoration: none;
+    font-family: 'Outfit', sans-serif;
     font-weight: 700;
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     color: var(--text-primary);
+    text-decoration: none;
     letter-spacing: -0.02em;
   }
 
-  .logo-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .dot {
+    color: var(--accent-primary);
   }
 
-  .nav {
-    display: flex;
-    align-items: center;
+  .desktop-nav {
+    display: none;
     gap: 2rem;
   }
 
-  .nav a {
+  .desktop-nav a {
     text-decoration: none;
     color: var(--text-secondary);
-    font-size: 0.875rem;
+    font-size: 0.95rem;
     font-weight: 500;
-    transition: color var(--transition-fast);
+    transition: color 0.2s;
   }
 
-  .nav a:hover {
+  .desktop-nav a:hover {
     color: var(--text-primary);
   }
 
-  .header-actions .btn {
-    padding: 0.625rem 1.25rem;
-    font-size: 0.8125rem;
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .login-link {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: none;
+  }
+
+  .btn-sm {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
   }
 
   .mobile-toggle {
-    display: none;
+    display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 32px;
-    height: 32px;
+    gap: 6px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 0.5rem;
   }
 
   .mobile-toggle span {
-    display: block;
-    width: 100%;
+    width: 24px;
     height: 2px;
     background: var(--text-primary);
     border-radius: 2px;
-    transition: all 0.3s;
   }
 
-  @media (max-width: 900px) {
-    .nav {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      flex-direction: column;
-      gap: 0;
-      background: var(--bg-surface);
-      border-bottom: var(--border-subtle);
-      padding: 1rem 0;
-    }
-
-    .nav.open {
-      display: flex;
-    }
-
-    .nav a {
-      padding: 1rem var(--container-padding);
-      width: 100%;
-    }
-
-    .header-actions {
-      display: none;
-    }
-
-    .mobile-toggle {
-      display: flex;
-    }
+  @media (min-width: 768px) {
+    .desktop-nav { display: flex; }
+    .login-link { display: block; }
+    .mobile-toggle { display: none; }
   }
 </style>
-
-<script>
-  const toggle = document.getElementById('mobile-toggle');
-  const nav = document.getElementById('nav');
-
-  toggle?.addEventListener('click', () => {
-    nav?.classList.toggle('open');
-  });
-</script>
