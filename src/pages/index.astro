@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Pricing from '../components/Pricing.astro';
+import Testimonials from '../components/Testimonials.astro';
+---
+
+<Layout title="LeadFlow - B2B Lead Generation That Actually Works">
+  <Header />
+  <main>
+    <Hero />
+    <Features />
+    <HowItWorks />
+    <Pricing />
+    <Testimonials />
+  </main>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="logo">Lead<span class="text-cyan">Flow</span></span>
+          <p class="footer-tagline">B2B leads that convert.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#how-it-works">How it Works</a>
+        </div>
+        <div class="footer-legal">
+          <p>&copy; 2026 LeadFlow. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</Layout>
+
+<style>
+  .footer {
+    background: var(--surface-1);
+    border-top: 1px solid var(--surface-2);
+    padding: 3rem 0;
+    margin-top: 6rem;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  
+  .footer-brand .logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  
+  .footer-tagline {
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+  
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .footer-links a:hover {
+    color: var(--cyan);
+  }
+  
+  .footer-legal {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+  
+  @media (min-width: 768px) {
+    .footer-content {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+</style>

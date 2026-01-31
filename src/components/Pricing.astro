@@ -1,0 +1,312 @@
+---
+const plans = [
+  {
+    name: 'Starter',
+    price: '49',
+    period: '/month',
+    description: 'Perfect for solo agencies and freelancers testing the waters.',
+    leads: '500',
+    features: [
+      'Up to 500 verified leads/month',
+      'Google Maps scraping',
+      'Owner email enrichment',
+      'Email verification',
+      'CSV export',
+      'Email support'
+    ],
+    cta: 'Join Waitlist',
+    popular: false
+  },
+  {
+    name: 'Pro',
+    price: '149',
+    period: '/month',
+    description: 'For growing agencies that need consistent lead flow.',
+    leads: '2,000',
+    features: [
+      'Up to 2,000 verified leads/month',
+      'Everything in Starter',
+      'Priority enrichment queue',
+      'CRM integrations',
+      'API access',
+      'Priority support',
+      'Bulk upload locations'
+    ],
+    cta: 'Join Waitlist',
+    popular: true
+  },
+  {
+    name: 'Enterprise',
+    price: 'Custom',
+    period: '',
+    description: 'For teams with high-volume needs and custom requirements.',
+    leads: 'Unlimited',
+    features: [
+      'Unlimited verified leads',
+      'Everything in Pro',
+      'Dedicated account manager',
+      'Custom integrations',
+      'SLA guarantee',
+      'White-label options',
+      'Phone support'
+    ],
+    cta: 'Contact Sales',
+    popular: false
+  }
+];
+---
+
+<section id="pricing" class="pricing">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="badge">Pricing</span>
+      <h2>Simple pricing.<br /><span class="data-highlight">No surprises.</span></h2>
+      <p>Pay for what you use. No hidden fees. No long-term contracts.</p>
+    </div>
+
+    <div class="pricing-grid">
+      {plans.map((plan, index) => (
+        <div class={`pricing-card glass-card fade-up stagger-${index + 1} ${plan.popular ? 'popular' : ''}`}>
+          {plan.popular && <div class="popular-badge">Most Popular</div>}
+
+          <div class="plan-header">
+            <h3>{plan.name}</h3>
+            <p class="plan-description">{plan.description}</p>
+          </div>
+
+          <div class="plan-price">
+            {plan.price !== 'Custom' && <span class="currency">$</span>}
+            <span class="amount mono">{plan.price}</span>
+            <span class="period">{plan.period}</span>
+          </div>
+
+          <div class="plan-leads">
+            <span class="leads-value mono">{plan.leads}</span>
+            <span class="leads-label">verified leads/month</span>
+          </div>
+
+          <ul class="plan-features">
+            {plan.features.map((feature) => (
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <a href="#waitlist" class={`btn ${plan.popular ? 'btn-primary' : 'btn-secondary'}`}>
+            {plan.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <div class="pricing-note fade-up">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5" />
+        <path d="M10 6v4M10 13v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <p>
+        <strong>Early access pricing.</strong> Lock in these rates during beta.
+        Prices may increase at launch.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 4rem;
+  }
+
+  .section-header .badge {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .section-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .pricing-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 2.5rem 2rem;
+  }
+
+  .pricing-card.popular {
+    border-color: rgba(0, 245, 212, 0.4);
+    background: linear-gradient(180deg, rgba(0, 245, 212, 0.05) 0%, var(--bg-glass) 100%);
+    transform: scale(1.02);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 1rem;
+    background: var(--gradient-primary);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--bg-deep);
+    white-space: nowrap;
+  }
+
+  .plan-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .plan-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .plan-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .plan-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .currency {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+  }
+
+  .amount {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .period {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .plan-leads {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    border-top: var(--border-subtle);
+    border-bottom: var(--border-subtle);
+    margin-bottom: 1.5rem;
+  }
+
+  .leads-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+  }
+
+  .leads-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .plan-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+    margin-bottom: 2rem;
+  }
+
+  .plan-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .plan-features svg {
+    flex-shrink: 0;
+    color: var(--accent-cyan);
+    margin-top: 2px;
+  }
+
+  .pricing-card .btn {
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .pricing-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 3rem auto 0;
+    padding: 1.5rem;
+    background: rgba(247, 37, 133, 0.05);
+    border: 1px solid rgba(247, 37, 133, 0.2);
+    border-radius: 12px;
+  }
+
+  .pricing-note svg {
+    flex-shrink: 0;
+    color: var(--accent-magenta);
+  }
+
+  .pricing-note p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .pricing-note strong {
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 900px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+    }
+
+    .pricing-card.popular {
+      transform: none;
+      order: -1;
+    }
+  }
+</style>

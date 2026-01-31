@@ -1,0 +1,402 @@
+---
+const steps = [
+  {
+    number: '01',
+    title: 'Define Your Target',
+    description: 'Choose your niche (plumbers, dentists, lawyers...), location, and any filters. We support any business type on Google Maps.',
+    visual: 'target'
+  },
+  {
+    number: '02',
+    title: 'We Scrape & Enrich',
+    description: 'Our system extracts business data from Google Maps, then hunts down owner/manager emails using multiple data sources.',
+    visual: 'process'
+  },
+  {
+    number: '03',
+    title: 'Verification Pipeline',
+    description: 'Every email goes through SMTP validation, catch-all detection, and deliverability scoring. Only verified emails make it through.',
+    visual: 'verify'
+  },
+  {
+    number: '04',
+    title: 'Export & Outreach',
+    description: 'Download your verified leads as CSV or push directly to your CRM. Start your outreach with confidence.',
+    visual: 'export'
+  }
+];
+---
+
+<section id="how-it-works" class="how-it-works">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="badge">How It Works</span>
+      <h2>From Google Maps to<br /><span class="data-highlight">verified inbox</span></h2>
+      <p>Four steps. No manual work. No third-party tools.</p>
+    </div>
+
+    <div class="steps-container">
+      <div class="steps-line" aria-hidden="true">
+        <div class="line-progress"></div>
+      </div>
+
+      {steps.map((step, index) => (
+        <div class={`step fade-up stagger-${index + 1}`}>
+          <div class="step-number mono">{step.number}</div>
+          <div class="step-content">
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </div>
+          <div class={`step-visual ${step.visual}`}>
+            {step.visual === 'target' && (
+              <div class="visual-target">
+                <div class="target-ring"></div>
+                <div class="target-ring"></div>
+                <div class="target-ring"></div>
+                <div class="target-center"></div>
+              </div>
+            )}
+            {step.visual === 'process' && (
+              <div class="visual-process">
+                <div class="data-stream">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            )}
+            {step.visual === 'verify' && (
+              <div class="visual-verify">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" />
+                  <path d="M16 24l6 6 12-12" stroke="var(--accent-cyan)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="check-path" />
+                </svg>
+              </div>
+            )}
+            {step.visual === 'export' && (
+              <div class="visual-export">
+                <div class="export-file">
+                  <span class="mono">.csv</span>
+                </div>
+                <div class="export-arrow">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="workflow-cta fade-up">
+      <div class="cta-content">
+        <h3>Ready to see it in action?</h3>
+        <p>Join the waitlist and get early access to LeadFlow</p>
+      </div>
+      <a href="#waitlist" class="btn btn-primary">Get Early Access</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how-it-works {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(180deg, transparent 0%, var(--bg-surface) 50%, transparent 100%);
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 5rem;
+  }
+
+  .section-header .badge {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .section-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+
+  .steps-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .steps-line {
+    position: absolute;
+    left: 32px;
+    top: 60px;
+    bottom: 60px;
+    width: 2px;
+    background: var(--bg-elevated);
+  }
+
+  .line-progress {
+    width: 100%;
+    height: 0;
+    background: var(--gradient-primary);
+    transition: height 1s var(--ease-out-expo);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr 200px;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .step-number {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-elevated);
+    border: var(--border-subtle);
+    border-radius: 16px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s var(--ease-out-expo);
+  }
+
+  .step:hover .step-number {
+    background: rgba(0, 245, 212, 0.1);
+    border-color: rgba(0, 245, 212, 0.3);
+    color: var(--accent-cyan);
+  }
+
+  .step-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .step-visual {
+    width: 200px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-elevated);
+    border: var(--border-subtle);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  /* Visual: Target */
+  .visual-target {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+
+  .target-ring {
+    position: absolute;
+    border: 2px solid var(--accent-cyan);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: targetPulse 2s ease-out infinite;
+  }
+
+  .target-ring:nth-child(1) {
+    inset: 0;
+    animation-delay: 0s;
+  }
+
+  .target-ring:nth-child(2) {
+    inset: 15px;
+    animation-delay: 0.3s;
+  }
+
+  .target-ring:nth-child(3) {
+    inset: 30px;
+    animation-delay: 0.6s;
+  }
+
+  .target-center {
+    position: absolute;
+    inset: 35px;
+    background: var(--accent-cyan);
+    border-radius: 50%;
+  }
+
+  @keyframes targetPulse {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: scale(1.2); opacity: 0; }
+  }
+
+  /* Visual: Process */
+  .visual-process {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .data-stream {
+    display: flex;
+    gap: 4px;
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+    animation: streamFlow 3s linear infinite;
+  }
+
+  .data-stream span {
+    width: 40px;
+    height: 8px;
+    background: var(--gradient-primary);
+    border-radius: 4px;
+    opacity: 0.7;
+  }
+
+  .data-stream span:nth-child(even) {
+    width: 60px;
+  }
+
+  @keyframes streamFlow {
+    0% { left: -200px; }
+    100% { left: 200px; }
+  }
+
+  /* Visual: Verify */
+  .visual-verify svg {
+    color: var(--text-muted);
+  }
+
+  .check-path {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    animation: checkDraw 1s ease-out forwards;
+    animation-delay: 0.5s;
+  }
+
+  @keyframes checkDraw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Visual: Export */
+  .visual-export {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .export-file {
+    padding: 0.75rem 1.5rem;
+    background: rgba(0, 245, 212, 0.1);
+    border: 1px solid rgba(0, 245, 212, 0.3);
+    border-radius: 8px;
+  }
+
+  .export-file .mono {
+    color: var(--accent-cyan);
+    font-size: 0.875rem;
+  }
+
+  .export-arrow {
+    color: var(--accent-cyan);
+    animation: bounce 1s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
+
+  /* CTA */
+  .workflow-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2.5rem 3rem;
+    background: var(--bg-elevated);
+    border: var(--border-accent);
+    border-radius: 20px;
+    margin-top: 4rem;
+  }
+
+  .cta-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .cta-content p {
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 900px) {
+    .step {
+      grid-template-columns: 48px 1fr;
+    }
+
+    .step-number {
+      width: 48px;
+      height: 48px;
+      font-size: 1rem;
+    }
+
+    .steps-line {
+      left: 23px;
+    }
+
+    .step-visual {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .workflow-cta {
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .workflow-cta .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  // Animate line progress on scroll
+  const stepsContainer = document.querySelector('.steps-container');
+  const lineProgress = document.querySelector('.line-progress');
+
+  if (stepsContainer && lineProgress) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (lineProgress as HTMLElement).style.height = '100%';
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(stepsContainer);
+  }
+</script>

@@ -1,0 +1,225 @@
+---
+const testimonials = [
+  {
+    quote: "We switched from Apollo and Hunter combined. LeadFlow does what both did for half the price, and the data is actually fresh.",
+    author: "Marcus Rodriguez",
+    role: "Founder, OutreachPro Agency",
+    avatar: "MR",
+    rating: 5
+  },
+  {
+    quote: "The owner email hit rate is insane. We're reaching decision-makers directly instead of fighting through gatekeepers.",
+    author: "Sarah Chen",
+    role: "Sales Director, HVAC Leads Co",
+    avatar: "SC",
+    rating: 5
+  },
+  {
+    quote: "Finally, a tool that understands local business prospecting. Google Maps data + verified emails = perfect combo.",
+    author: "James Wilson",
+    role: "CEO, Local Lead Gen",
+    avatar: "JW",
+    rating: 5
+  }
+];
+
+const stats = [
+  { value: '2.4M+', label: 'Leads Generated' },
+  { value: '89%', label: 'Avg. Deliverability' },
+  { value: '500+', label: 'Beta Users' },
+  { value: '4.9', label: 'User Rating' }
+];
+---
+
+<section id="testimonials" class="testimonials">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="badge">Testimonials</span>
+      <h2>Trusted by <span class="data-highlight">500+</span><br />lead gen agencies</h2>
+      <p>See what early adopters are saying about LeadFlow</p>
+    </div>
+
+    <div class="testimonials-grid">
+      {testimonials.map((testimonial, index) => (
+        <div class={`testimonial-card glass-card fade-up stagger-${index + 1}`}>
+          <div class="testimonial-rating">
+            {Array.from({ length: testimonial.rating }).map(() => (
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 0l2.47 5.01L16 5.82l-4 3.9.94 5.51L8 12.76l-4.94 2.47.94-5.51-4-3.9 5.53-.81L8 0z" />
+              </svg>
+            ))}
+          </div>
+
+          <blockquote>"{testimonial.quote}"</blockquote>
+
+          <div class="testimonial-author">
+            <div class="author-avatar">{testimonial.avatar}</div>
+            <div class="author-info">
+              <span class="author-name">{testimonial.author}</span>
+              <span class="author-role">{testimonial.role}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="stats-bar fade-up">
+      {stats.map((stat) => (
+        <div class="stat-item">
+          <span class="stat-value mono">{stat.value}</span>
+          <span class="stat-label">{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(180deg, transparent 0%, var(--bg-surface) 30%, var(--bg-surface) 70%, transparent 100%);
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 4rem;
+  }
+
+  .section-header .badge {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .section-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .testimonial-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .testimonial-rating {
+    display: flex;
+    gap: 4px;
+    color: #fbbf24;
+  }
+
+  blockquote {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: var(--border-subtle);
+  }
+
+  .author-avatar {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--bg-deep);
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .author-name {
+    font-weight: 600;
+  }
+
+  .author-role {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 3rem;
+    background: var(--bg-elevated);
+    border: var(--border-subtle);
+    border-radius: 20px;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 900px) {
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stats-bar {
+      grid-template-columns: repeat(2, 1fr);
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-bar {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+    }
+  }
+</style>

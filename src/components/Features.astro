@@ -1,0 +1,300 @@
+---
+const features = [
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="2"/></svg>`,
+    title: 'Google Maps Scraping',
+    description: 'Extract business data from any location, category, or keyword. Get names, addresses, phones, websites, and ratings in bulk.',
+    highlight: 'Any niche, any city'
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    title: 'Decision-Maker Emails',
+    description: "We don't just find emails. We find the owner, manager, or key decision-maker behind the business. No more info@ or contact@ dead-ends.",
+    highlight: '40% success rate'
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3l8.66 5v8.66L12 22l-8.66-5.34V8L12 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`,
+    title: 'Email Verification',
+    description: 'Every email goes through our verification pipeline. Catch-all detection, deliverability scoring, and bounce prediction included.',
+    highlight: '90%+ deliverability'
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    title: 'Export Anywhere',
+    description: 'Download as CSV or push directly to your CRM. HubSpot, Salesforce, Pipedrive, or any tool that accepts imports.',
+    highlight: 'CSV + CRM integrations'
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    title: 'All-in-One Pipeline',
+    description: "No juggling between Apollo, Hunter, and Neverbounce. One tool does scraping, enrichment, and verification. Save time and money.",
+    highlight: 'Replace 3 tools'
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>`,
+    title: 'Fresh Data Guarantee',
+    description: "We don't resell old databases. Every lead is scraped and enriched on-demand. You get data that's actually current.",
+    highlight: 'Real-time scraping'
+  }
+];
+---
+
+<section id="features" class="features">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="badge">Features</span>
+      <h2>Everything you need.<br /><span class="data-highlight">Nothing you don't.</span></h2>
+      <p>A complete lead generation pipeline in one platform. No more duct-taping multiple tools together.</p>
+    </div>
+
+    <div class="features-grid">
+      {features.map((feature, index) => (
+        <div class={`feature-card glass-card fade-up stagger-${(index % 3) + 1}`}>
+          <div class="feature-icon" set:html={feature.icon} />
+          <h3>{feature.title}</h3>
+          <p>{feature.description}</p>
+          <span class="feature-highlight mono">{feature.highlight}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="features-comparison fade-up">
+      <div class="comparison-header">
+        <h3>Why switch from the competition?</h3>
+      </div>
+      <div class="comparison-table">
+        <div class="comparison-row header">
+          <span></span>
+          <span>LeadFlow</span>
+          <span>Apollo</span>
+          <span>Hunter</span>
+        </div>
+        <div class="comparison-row">
+          <span>Google Maps scraping</span>
+          <span class="yes">Yes</span>
+          <span class="no">No</span>
+          <span class="no">No</span>
+        </div>
+        <div class="comparison-row">
+          <span>Owner/Decision-maker emails</span>
+          <span class="yes">Yes</span>
+          <span class="partial">Limited</span>
+          <span class="no">Generic only</span>
+        </div>
+        <div class="comparison-row">
+          <span>Built-in verification</span>
+          <span class="yes">Yes</span>
+          <span class="partial">Extra cost</span>
+          <span class="partial">Basic</span>
+        </div>
+        <div class="comparison-row">
+          <span>Fresh, on-demand data</span>
+          <span class="yes">Yes</span>
+          <span class="no">Database</span>
+          <span class="no">Database</span>
+        </div>
+        <div class="comparison-row">
+          <span>Starting price</span>
+          <span class="highlight mono">$49/mo</span>
+          <span class="mono">$99/mo</span>
+          <span class="mono">$49/mo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .features {
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 4rem;
+  }
+
+  .section-header .badge {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .section-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 245, 212, 0.1);
+    border-radius: 12px;
+    color: var(--accent-cyan);
+  }
+
+  .feature-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .feature-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .feature-highlight {
+    font-size: 0.75rem;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-top: 0.5rem;
+    border-top: var(--border-subtle);
+  }
+
+  /* Comparison */
+  .features-comparison {
+    background: var(--bg-surface);
+    border: var(--border-subtle);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .comparison-header {
+    padding: 2rem;
+    text-align: center;
+    border-bottom: var(--border-subtle);
+  }
+
+  .comparison-header h3 {
+    font-size: 1.5rem;
+  }
+
+  .comparison-table {
+    padding: 1rem;
+  }
+
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    align-items: center;
+    border-radius: 12px;
+    transition: background 0.2s;
+  }
+
+  .comparison-row:not(.header):hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .comparison-row.header {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: var(--border-subtle);
+    margin-bottom: 0.5rem;
+  }
+
+  .comparison-row.header span:nth-child(2) {
+    color: var(--accent-cyan);
+    font-weight: 600;
+  }
+
+  .comparison-row span {
+    text-align: center;
+  }
+
+  .comparison-row span:first-child {
+    text-align: left;
+    color: var(--text-secondary);
+  }
+
+  .comparison-row .yes {
+    color: #28c840;
+    font-weight: 600;
+  }
+
+  .comparison-row .no {
+    color: var(--text-muted);
+  }
+
+  .comparison-row .partial {
+    color: #febc2e;
+  }
+
+  .comparison-row .highlight {
+    color: var(--accent-cyan);
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .comparison-row {
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      font-size: 0.9rem;
+      padding: 1rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .comparison-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 1.5rem;
+      border-bottom: var(--border-subtle);
+    }
+
+    .comparison-row.header {
+      display: none;
+    }
+
+    .comparison-row span {
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .comparison-row span:first-child {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .comparison-row span:not(:first-child)::before {
+      content: attr(data-label);
+      color: var(--text-muted);
+    }
+  }
+</style>
