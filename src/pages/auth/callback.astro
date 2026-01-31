@@ -1,0 +1,54 @@
+---
+// This page handles the OAuth/magic link callback
+// It extracts the tokens and redirects to dashboard
+---
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Authenticating...</title>
+  </head>
+  <body>
+    <p>Authenticating...</p>
+
+    <script>
+      import { createClient } from '@supabase/supabase-js';
+
+      const supabase = createClient(
+        import.meta.env.PUBLIC_SUPABASE_URL,
+        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+      );
+
+      // Handle the callback
+      async function handleCallback() {
+        // Get the code from URL if present (for PKCE flow)
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+
+        if (code) {
+          // Exchange code for session
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) {
+            console.error('Auth error:', error);
+            window.location.href = '/auth/login?error=' + encodeURIComponent(error.message);
+            return;
+          }
+        }
+
+        // Also handle hash fragments (for implicit flow)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = hashParams.get('access_token');
+
+        if (accessToken) {
+          // Session is automatically set by Supabase
+          await supabase.auth.getSession();
+        }
+
+        // Redirect to dashboard
+        window.location.href = '/dashboard';
+      }
+
+      handleCallback();
+    </script>
+  </body>
+</html>

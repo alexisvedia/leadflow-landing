@@ -1,0 +1,29 @@
+---
+// Logout page - handles sign out
+---
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Logging out...</title>
+  </head>
+  <body>
+    <p>Logging out...</p>
+
+    <script>
+      import { createClient } from '@supabase/supabase-js';
+
+      const supabase = createClient(
+        import.meta.env.PUBLIC_SUPABASE_URL,
+        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+      );
+
+      async function logout() {
+        await supabase.auth.signOut();
+        window.location.href = '/';
+      }
+
+      logout();
+    </script>
+  </body>
+</html>

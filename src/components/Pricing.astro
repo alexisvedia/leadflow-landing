@@ -1,4 +1,5 @@
 ---
+// Pricing component with dynamic CTAs based on auth state
 ---
 
 <section id="pricing" class="pricing-section">
@@ -12,7 +13,7 @@
     <div class="pricing-grid">
 
       <!-- Starter -->
-      <div class="plan-card">
+      <div class="plan-card" data-plan="starter">
         <div class="plan-header">
           <span class="plan-name">Starter</span>
           <div class="plan-price">
@@ -29,13 +30,13 @@
           <li class="disabled">CRM integrations</li>
         </ul>
 
-        <a href="https://console.apify.com/actors/U1NdkcLzWXOfhQ7iM" target="_blank" class="plan-cta">
+        <button class="plan-cta checkout-btn" data-plan="starter">
           Get Started
-        </a>
+        </button>
       </div>
 
       <!-- Growth -->
-      <div class="plan-card featured">
+      <div class="plan-card featured" data-plan="growth">
         <div class="plan-header">
           <span class="plan-name">Growth</span>
           <div class="plan-price">
@@ -48,17 +49,17 @@
         <ul class="plan-features">
           <li>5,000 verified leads</li>
           <li>Advanced enrichment</li>
-          <li>HubSpot & Salesforce sync</li>
+          <li>HubSpot & Sheets sync</li>
           <li>Priority support</li>
         </ul>
 
-        <a href="https://console.apify.com/actors/U1NdkcLzWXOfhQ7iM" target="_blank" class="plan-cta primary">
+        <button class="plan-cta primary checkout-btn" data-plan="growth">
           Start Free Trial
-        </a>
+        </button>
       </div>
 
       <!-- Scale -->
-      <div class="plan-card">
+      <div class="plan-card" data-plan="scale">
         <div class="plan-header">
           <span class="plan-name">Scale</span>
           <div class="plan-price">
@@ -71,13 +72,13 @@
         <ul class="plan-features">
           <li>20,000 verified leads</li>
           <li>Full API access</li>
-          <li>White-label reports</li>
-          <li>Dedicated manager</li>
+          <li>Webhook integrations</li>
+          <li>Dedicated support</li>
         </ul>
 
-        <a href="https://console.apify.com/actors/U1NdkcLzWXOfhQ7iM" target="_blank" class="plan-cta">
+        <button class="plan-cta checkout-btn" data-plan="scale">
           Contact Sales
-        </a>
+        </button>
       </div>
 
     </div>
@@ -88,6 +89,100 @@
 
   </div>
 </section>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  // Handle checkout button clicks
+  document.querySelectorAll('.checkout-btn').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const button = e.currentTarget as HTMLButtonElement;
+      const plan = button.dataset.plan;
+
+      if (!plan) return;
+
+      // Check if user is logged in
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        // Redirect to login with return URL
+        window.location.href = `/auth/login?redirect=/dashboard/upgrade?plan=${plan}`;
+        return;
+      }
+
+      // User is logged in, create checkout session
+      button.disabled = true;
+      button.textContent = 'Loading...';
+
+      try {
+        const response = await fetch('/api/create-checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ plan }),
+        });
+
+        const data = await response.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert(data.error || 'Failed to create checkout session');
+          button.disabled = false;
+          button.textContent = 'Get Started';
+        }
+      } catch (error) {
+        console.error('Checkout error:', error);
+        alert('Failed to create checkout session');
+        button.disabled = false;
+        button.textContent = 'Get Started';
+      }
+    });
+  });
+
+  // Update button text based on auth state
+  async function updateButtonsForAuthState() {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      // User is logged in, check their current plan
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('plan')
+        .eq('id', session.user.id)
+        .single();
+
+      const currentPlan = profile?.plan || 'free';
+      const planOrder = ['free', 'starter', 'growth', 'scale'];
+      const currentIndex = planOrder.indexOf(currentPlan);
+
+      document.querySelectorAll('.checkout-btn').forEach((btn) => {
+        const button = btn as HTMLButtonElement;
+        const plan = button.dataset.plan;
+        const planIndex = planOrder.indexOf(plan || '');
+
+        if (plan === currentPlan) {
+          button.textContent = 'Current Plan';
+          button.disabled = true;
+        } else if (planIndex < currentIndex) {
+          button.textContent = 'Downgrade';
+        } else {
+          button.textContent = 'Upgrade';
+        }
+      });
+    }
+  }
+
+  // Run on page load
+  updateButtonsForAuthState();
+</script>
 
 <style>
   .pricing-section {
@@ -223,6 +318,7 @@
   /* CTA */
   .plan-cta {
     display: block;
+    width: 100%;
     text-align: center;
     padding: 0.875rem;
     margin-top: 1.5rem;
@@ -233,12 +329,19 @@
     border-radius: 8px;
     transition: all 0.2s ease;
     color: rgba(255, 255, 255, 0.7);
+    background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
   }
 
-  .plan-cta:hover {
+  .plan-cta:hover:not(:disabled) {
     color: white;
     border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .plan-cta:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .plan-cta.primary {
@@ -247,7 +350,7 @@
     border: none;
   }
 
-  .plan-cta.primary:hover {
+  .plan-cta.primary:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.9);
   }
 

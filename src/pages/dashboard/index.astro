@@ -1,0 +1,405 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import { supabase, getUserSubscription, getUserExtractions, PLANS } from '../../lib/supabase';
+
+// Check authentication
+const { data: { session } } = await supabase.auth.getSession();
+
+if (!session) {
+  return Astro.redirect('/auth/login');
+}
+
+const user = session.user;
+
+// Get user's subscription and extractions
+const subscription = await getUserSubscription(user.id);
+const extractions = await getUserExtractions(user.id);
+
+// Get profile to know the plan
+const { data: profile } = await supabase
+  .from('profiles')
+  .select('plan, stripe_customer_id')
+  .eq('id', user.id)
+  .single();
+
+const plan = profile?.plan || 'free';
+const planConfig = PLANS[plan as keyof typeof PLANS];
+const credits = subscription?.credits_remaining ?? planConfig.credits;
+const creditsTotal = subscription?.credits_total ?? planConfig.credits;
+---
+
+<Layout title="Dashboard | PullLeads">
+  <div class="dashboard">
+    <!-- Header -->
+    <header class="dash-header">
+      <div class="logo">
+        <a href="/">PullLeads</a>
+      </div>
+      <nav class="dash-nav">
+        <a href="/dashboard" class="active">Dashboard</a>
+        <a href="/dashboard/extract">Extract Leads</a>
+        <a href="/dashboard/integrations">Integrations</a>
+      </nav>
+      <div class="user-menu">
+        <span class="user-email">{user.email}</span>
+        <a href="/auth/logout" class="logout-link">Logout</a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dash-main">
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Current Plan</span>
+          <span class="stat-value plan-badge {plan}">{plan.charAt(0).toUpperCase() + plan.slice(1)}</span>
+          {plan !== 'scale' && (
+            <a href="/dashboard/upgrade" class="upgrade-link">Upgrade</a>
+          )}
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Credits Remaining</span>
+          <span class="stat-value">{credits.toLocaleString()}</span>
+          <div class="credits-bar">
+            <div class="credits-fill" style={`width: ${(credits / creditsTotal) * 100}%`}></div>
+          </div>
+          <span class="stat-subtitle">of {creditsTotal.toLocaleString()} this month</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Extractions This Month</span>
+          <span class="stat-value">{extractions.length}</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Total Leads Extracted</span>
+          <span class="stat-value">
+            {extractions.reduce((sum, e) => sum + (e.leads_count || 0), 0).toLocaleString()}
+          </span>
+        </div>
+      </div>
+
+      <!-- Quick Action -->
+      <div class="quick-action">
+        <h2>Ready to extract leads?</h2>
+        <p>Search for local businesses and get verified owner emails.</p>
+        <a href="/dashboard/extract" class="cta-btn">Start New Extraction</a>
+      </div>
+
+      <!-- Recent Extractions -->
+      <section class="recent-extractions">
+        <h3>Recent Extractions</h3>
+
+        {extractions.length === 0 ? (
+          <div class="empty-state">
+            <p>No extractions yet. Start your first one!</p>
+          </div>
+        ) : (
+          <table class="extractions-table">
+            <thead>
+              <tr>
+                <th>Query</th>
+                <th>Location</th>
+                <th>Leads</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {extractions.slice(0, 10).map((extraction) => (
+                <tr>
+                  <td>{extraction.query}</td>
+                  <td>{extraction.location}</td>
+                  <td>{extraction.leads_count ?? '-'}</td>
+                  <td>
+                    <span class={`status-badge ${extraction.status}`}>
+                      {extraction.status}
+                    </span>
+                  </td>
+                  <td>{new Date(extraction.created_at).toLocaleDateString()}</td>
+                  <td>
+                    {extraction.status === 'completed' && (
+                      <a href={`/dashboard/extraction/${extraction.id}`} class="action-link">
+                        View
+                      </a>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .dashboard {
+    min-height: 100vh;
+    background: #030304;
+  }
+
+  /* Header */
+  .dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .logo a {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+  }
+
+  .dash-nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .dash-nav a {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .dash-nav a:hover,
+  .dash-nav a.active {
+    color: white;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .user-email {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .logout-link {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+  }
+
+  .logout-link:hover {
+    color: white;
+  }
+
+  /* Main */
+  .dash-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .stat-subtitle {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.25rem;
+  }
+
+  .plan-badge {
+    display: inline-block;
+    font-size: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .plan-badge.free { background: rgba(255, 255, 255, 0.1); }
+  .plan-badge.starter { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+  .plan-badge.growth { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+  .plan-badge.scale { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+
+  .upgrade-link {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: underline;
+  }
+
+  .credits-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin-top: 0.75rem;
+    overflow: hidden;
+  }
+
+  .credits-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    border-radius: 2px;
+  }
+
+  /* Quick Action */
+  .quick-action {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .quick-action h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .quick-action p {
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 1.5rem;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: white;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: opacity 0.2s;
+  }
+
+  .cta-btn:hover {
+    opacity: 0.9;
+  }
+
+  /* Extractions Table */
+  .recent-extractions h3 {
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+  }
+
+  .extractions-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .extractions-table th,
+  .extractions-table td {
+    padding: 0.875rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .extractions-table th {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .extractions-table td {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .status-badge.pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+  .status-badge.running { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+  .status-badge.completed { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+  .status-badge.failed { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+  .action-link {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dash-header {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .dash-nav {
+      order: 3;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .extractions-table {
+      font-size: 0.8rem;
+    }
+
+    .extractions-table th,
+    .extractions-table td {
+      padding: 0.5rem;
+    }
+  }
+</style>

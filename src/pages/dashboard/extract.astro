@@ -1,0 +1,541 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import { supabase, getUserSubscription, PLANS } from '../../lib/supabase';
+
+// Check authentication
+const { data: { session } } = await supabase.auth.getSession();
+
+if (!session) {
+  return Astro.redirect('/auth/login');
+}
+
+const user = session.user;
+
+// Get subscription info
+const subscription = await getUserSubscription(user.id);
+const { data: profile } = await supabase
+  .from('profiles')
+  .select('plan')
+  .eq('id', user.id)
+  .single();
+
+const plan = profile?.plan || 'free';
+const planConfig = PLANS[plan as keyof typeof PLANS];
+const credits = subscription?.credits_remaining ?? planConfig.credits;
+
+// Predefined niches
+const niches = [
+  { value: 'plumbers', label: 'Plumbers' },
+  { value: 'hvac', label: 'HVAC Contractors' },
+  { value: 'electricians', label: 'Electricians' },
+  { value: 'roofers', label: 'Roofers' },
+  { value: 'landscapers', label: 'Landscapers' },
+  { value: 'dentists', label: 'Dentists' },
+  { value: 'chiropractors', label: 'Chiropractors' },
+  { value: 'real-estate', label: 'Real Estate Agents' },
+  { value: 'lawyers', label: 'Lawyers' },
+  { value: 'auto-repair', label: 'Auto Repair' },
+  { value: 'restaurants', label: 'Restaurants' },
+];
+
+const sources = [
+  { value: 'google_maps', label: 'Google Maps (Global)' },
+  { value: 'yelp', label: 'Yelp (USA)' },
+  { value: 'yellow_pages', label: 'Yellow Pages (USA)' },
+  { value: 'bbb', label: 'Better Business Bureau (USA)' },
+  { value: 'all_usa', label: 'All USA Sources' },
+];
+---
+
+<Layout title="Extract Leads | PullLeads">
+  <div class="dashboard">
+    <!-- Header -->
+    <header class="dash-header">
+      <div class="logo">
+        <a href="/">PullLeads</a>
+      </div>
+      <nav class="dash-nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/dashboard/extract" class="active">Extract Leads</a>
+        <a href="/dashboard/integrations">Integrations</a>
+      </nav>
+      <div class="user-menu">
+        <span class="credits-display">{credits.toLocaleString()} credits</span>
+        <a href="/auth/logout" class="logout-link">Logout</a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="extract-main">
+      <div class="extract-container">
+        <h1>Extract Leads</h1>
+        <p class="subtitle">Search for local businesses and get verified owner emails.</p>
+
+        <form id="extract-form" class="extract-form">
+          <!-- Query Type -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="query-type">Search Type</label>
+              <select id="query-type" name="queryType">
+                <option value="niche">Select a Niche</option>
+                <option value="custom">Custom Query</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Niche Selector -->
+          <div class="form-group" id="niche-group">
+            <label for="niche">Business Niche</label>
+            <select id="niche" name="niche">
+              {niches.map((niche) => (
+                <option value={niche.value}>{niche.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <!-- Custom Query -->
+          <div class="form-group" id="custom-group" style="display: none;">
+            <label for="query">Custom Query</label>
+            <input
+              type="text"
+              id="query"
+              name="query"
+              placeholder="e.g., coffee shops, yoga studios, pet stores"
+            />
+          </div>
+
+          <!-- Location -->
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              placeholder="e.g., Miami, Florida or New York, NY"
+              required
+            />
+          </div>
+
+          <!-- Data Source -->
+          <div class="form-group">
+            <label for="source">Data Source</label>
+            <select id="source" name="source">
+              {sources.map((source) => (
+                <option value={source.value}>{source.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <!-- Limit -->
+          <div class="form-group">
+            <label for="limit">Number of Leads</label>
+            <input
+              type="number"
+              id="limit"
+              name="limit"
+              min="1"
+              max="500"
+              value="50"
+            />
+            <span class="form-hint">1 credit = 1 lead. You have {credits.toLocaleString()} credits available.</span>
+          </div>
+
+          <!-- Advanced Options -->
+          <details class="advanced-options">
+            <summary>Advanced Options</summary>
+
+            <div class="form-group">
+              <label for="enrich-mode">Enrichment Mode</label>
+              <select id="enrich-mode" name="enrichMode">
+                <option value="name-search">Standard (Recommended)</option>
+                <option value="website-only">Website Only</option>
+                <option value="aggressive">Aggressive</option>
+              </select>
+              <span class="form-hint">Standard finds emails by company name and website.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="webhook">Webhook URL (Optional)</label>
+              <input
+                type="url"
+                id="webhook"
+                name="webhookUrl"
+                placeholder="https://your-site.com/webhook"
+              />
+              <span class="form-hint">We'll POST the results to this URL when done.</span>
+            </div>
+          </details>
+
+          <!-- Submit -->
+          <div class="form-actions">
+            <button type="submit" class="submit-btn" disabled={credits === 0}>
+              <span class="btn-text">
+                {credits === 0 ? 'No Credits Available' : 'Start Extraction'}
+              </span>
+              <span class="btn-loading" style="display: none;">Starting...</span>
+            </button>
+
+            {credits === 0 && (
+              <p class="no-credits-warning">
+                <a href="/dashboard/upgrade">Upgrade your plan</a> to get more credits.
+              </p>
+            )}
+          </div>
+        </form>
+
+        <!-- Result Message -->
+        <div id="result-message" class="result-message" style="display: none;"></div>
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  // Toggle between niche and custom query
+  const queryTypeSelect = document.getElementById('query-type') as HTMLSelectElement;
+  const nicheGroup = document.getElementById('niche-group') as HTMLDivElement;
+  const customGroup = document.getElementById('custom-group') as HTMLDivElement;
+
+  queryTypeSelect.addEventListener('change', () => {
+    if (queryTypeSelect.value === 'niche') {
+      nicheGroup.style.display = 'block';
+      customGroup.style.display = 'none';
+    } else {
+      nicheGroup.style.display = 'none';
+      customGroup.style.display = 'block';
+    }
+  });
+
+  // Handle form submission
+  const form = document.getElementById('extract-form') as HTMLFormElement;
+  const resultMessage = document.getElementById('result-message') as HTMLDivElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const btnText = btn.querySelector('.btn-text') as HTMLSpanElement;
+    const btnLoading = btn.querySelector('.btn-loading') as HTMLSpanElement;
+
+    // Build request payload
+    const queryType = formData.get('queryType') as string;
+    const payload = {
+      query: queryType === 'niche' ? null : formData.get('query'),
+      niche: queryType === 'niche' ? formData.get('niche') : null,
+      location: formData.get('location'),
+      source: formData.get('source'),
+      limit: parseInt(formData.get('limit') as string),
+      enrichMode: formData.get('enrichMode'),
+      webhookUrl: formData.get('webhookUrl') || null,
+    };
+
+    // Disable button
+    btn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline';
+
+    try {
+      // Get current session
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        window.location.href = '/auth/login';
+        return;
+      }
+
+      // Call API to trigger extraction
+      const response = await fetch('/api/extract', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to start extraction');
+      }
+
+      // Show success message
+      resultMessage.innerHTML = `
+        <div class="success">
+          <h3>Extraction Started!</h3>
+          <p>Your extraction is being processed. You can track its progress on the <a href="/dashboard">dashboard</a>.</p>
+          <p class="extraction-id">Extraction ID: ${result.extractionId}</p>
+        </div>
+      `;
+      resultMessage.style.display = 'block';
+
+      // Reset form
+      form.reset();
+
+    } catch (error: any) {
+      resultMessage.innerHTML = `
+        <div class="error">
+          <h3>Error</h3>
+          <p>${error.message}</p>
+        </div>
+      `;
+      resultMessage.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btnText.style.display = 'inline';
+      btnLoading.style.display = 'none';
+    }
+  });
+</script>
+
+<style>
+  .dashboard {
+    min-height: 100vh;
+    background: #030304;
+  }
+
+  /* Header - same as dashboard */
+  .dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .logo a {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+  }
+
+  .dash-nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .dash-nav a {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+  }
+
+  .dash-nav a:hover,
+  .dash-nav a.active {
+    color: white;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .credits-display {
+    font-size: 0.85rem;
+    color: #22c55e;
+    font-weight: 500;
+  }
+
+  .logout-link {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+  }
+
+  /* Main */
+  .extract-main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .extract-container h1 {
+    font-size: 2rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .subtitle {
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 2rem;
+  }
+
+  /* Form */
+  .extract-form {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.5rem;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    transition: border-color 0.2s;
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  select option {
+    background: #1a1a1a;
+    color: white;
+  }
+
+  .form-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.5rem;
+  }
+
+  /* Advanced Options */
+  .advanced-options {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+  }
+
+  .advanced-options summary {
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .advanced-options[open] summary {
+    margin-bottom: 1rem;
+  }
+
+  /* Submit */
+  .form-actions {
+    margin-top: 1.5rem;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .no-credits-warning {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .no-credits-warning a {
+    color: white;
+  }
+
+  /* Result Message */
+  .result-message {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .result-message .success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .result-message .success h3 {
+    color: #22c55e;
+    margin: 0 0 0.5rem;
+  }
+
+  .result-message .success p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+  }
+
+  .result-message .success a {
+    color: white;
+  }
+
+  .result-message .extraction-id {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.5rem;
+  }
+
+  .result-message .error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .result-message .error h3 {
+    color: #ef4444;
+    margin: 0 0 0.5rem;
+  }
+
+  .result-message .error p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+  }
+</style>
