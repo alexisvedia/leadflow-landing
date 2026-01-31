@@ -1,9 +1,11 @@
 /* 
  * AESTHETIC: Editorial Dark / Modern Sophistication 
  * Distinctive, clean, purposeful.
+ * UPDATED: B2B/SaaS Professional (Satoshi + Inter)
  */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* COLORS: Deep, Rich, Cinematic */
@@ -50,7 +52,7 @@
 }
 
 html {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg-main);
   color: var(--text-primary);
   scroll-behavior: smooth;
@@ -65,7 +67,7 @@ body {
 
 /* TYPOGRAPHY */
 h1, h2, h3, h4, h5 {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Satoshi', sans-serif;
   color: var(--text-primary);
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -79,7 +81,7 @@ h1 {
 
 h2 {
   font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 h3 {
@@ -93,9 +95,9 @@ p {
 }
 
 .font-serif {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Satoshi', sans-serif;
   font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 /* UTILITIES */
@@ -119,13 +121,14 @@ p {
   justify-content: center;
   padding: 1rem 2rem;
   border-radius: var(--radius-full);
-  font-family: 'Outfit', sans-serif;
-  font-weight: 600;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 700;
   font-size: 1rem;
   transition: all 0.3s var(--ease-out-expo);
   cursor: pointer;
   text-decoration: none;
   gap: 0.5rem;
+  letter-spacing: -0.01em;
 }
 
 .btn-primary {
