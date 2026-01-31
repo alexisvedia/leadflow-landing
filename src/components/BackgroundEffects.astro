@@ -1,30 +1,12 @@
 ---
 ---
+
 <div class="background-effects">
-  <!-- Gradient Orbs -->
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+  <!-- Subtle radial gradient -->
+  <div class="gradient-top"></div>
 
-  <!-- Animated Grid -->
+  <!-- Minimal grid -->
   <div class="grid-overlay"></div>
-
-  <!-- Floating Shapes -->
-  <svg class="floating-shapes" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <!-- Hexagon 1 -->
-    <path class="float-shape shape-1" d="M10,20 L15,17 L20,20 L20,26 L15,29 L10,26 Z" 
-          fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.2" />
-    
-    <!-- Hexagon 2 -->
-    <path class="float-shape shape-2" d="M80,60 L85,57 L90,60 L90,66 L85,69 L80,66 Z" 
-          fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" />
-    
-    <!-- Lines -->
-    <line class="float-shape shape-3" x1="30" y1="40" x2="30" y2="50" 
-          stroke="rgba(0, 163, 255, 0.1)" stroke-width="0.2" />
-    <line class="float-shape shape-4" x1="70" y1="10" x2="80" y2="20" 
-          stroke="rgba(0, 102, 255, 0.1)" stroke-width="0.2" />
-  </svg>
 </div>
 
 <style>
@@ -37,105 +19,30 @@
     z-index: -1;
     overflow: hidden;
     pointer-events: none;
+    background-color: #000;
   }
 
-  /* Orbs */
-  .orb {
+  .gradient-top {
     position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.4;
-    animation: pulse 10s infinite alternate ease-in-out;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      ellipse 80% 50% at 50% 0%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 60%
+    );
   }
 
-  .orb-1 {
-    top: -10%;
-    left: -5%;
-    width: 60vw;
-    height: 60vw;
-    background: radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, transparent 70%);
-    animation-duration: 15s;
-  }
-
-  .orb-2 {
-    bottom: -10%;
-    right: -10%;
-    width: 50vw;
-    height: 50vw;
-    background: radial-gradient(circle, rgba(0, 163, 255, 0.1) 0%, transparent 70%);
-    animation-duration: 18s;
-    animation-delay: -5s;
-  }
-
-  .orb-3 {
-    top: 40%;
-    left: 40%;
-    width: 30vw;
-    height: 30vw;
-    background: radial-gradient(circle, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
-    animation-duration: 20s;
-    animation-delay: -10s;
-  }
-
-  /* Grid */
   .grid-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 50px 50px;
-    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-    opacity: 0.5;
-  }
-
-  /* Floating Shapes */
-  .floating-shapes {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .float-shape {
-    transform-origin: center;
-  }
-
-  .shape-1 { animation: float 20s infinite linear; }
-  .shape-2 { animation: float-reverse 25s infinite linear; }
-  .shape-3 { animation: float-vertical 15s infinite ease-in-out; }
-  .shape-4 { animation: float-horizontal 18s infinite ease-in-out; }
-
-  @keyframes pulse {
-    0% { transform: scale(1); opacity: 0.3; }
-    100% { transform: scale(1.1); opacity: 0.5; }
-  }
-
-  @keyframes float {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    33% { transform: translate(2%, 3%) rotate(5deg); }
-    66% { transform: translate(-1%, 1%) rotate(-2deg); }
-    100% { transform: translate(0, 0) rotate(0deg); }
-  }
-
-  @keyframes float-reverse {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    33% { transform: translate(-2%, -3%) rotate(-5deg); }
-    66% { transform: translate(1%, -1%) rotate(2deg); }
-    100% { transform: translate(0, 0) rotate(0deg); }
-  }
-
-  @keyframes float-vertical {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-  }
-
-  @keyframes float-horizontal {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(20px); }
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, black 0%, transparent 70%);
   }
 </style>

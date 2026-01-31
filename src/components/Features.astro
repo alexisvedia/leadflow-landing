@@ -1,356 +1,478 @@
 ---
 ---
-<section id="features" class="py-24 relative overflow-hidden">
+
+<section id="features" class="features-section">
   <div class="container">
-    <div class="header mb-16 text-center max-w-2xl mx-auto reveal-on-scroll">
-      <h2 class="mb-4">Data mining, <span class="font-serif italic text-gradient">reinvented.</span></h2>
-      <p>Forget manual copying. We built a pipeline that scrapes, enriches, and verifies 
-      leads faster than you can open a spreadsheet.</p>
+
+    <div class="section-header">
+      <span class="section-label">Features</span>
+      <h2>Everything you need<br><span class="accent-serif">to fill your pipeline</span></h2>
     </div>
 
     <div class="bento-grid">
-      <!-- Feature 1: Large -->
-      <div class="feature-card large glass-panel reveal-on-scroll">
+
+      <!-- Large: Google Maps Integration -->
+      <div class="bento-card bento-large">
         <div class="card-content">
-          <div class="icon-box">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-          </div>
-          <h3>Google Maps Unlocked</h3>
-          <p>Scrape any niche in any city. Plumbers in Austin? Marketing agencies in London? If it's on Maps, we pull it.</p>
-          <div class="visual-mockup">
-            <div class="map-dots">
-              <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
-            </div>
-          </div>
+          <span class="card-number">01</span>
+          <h3>Google Maps, Unlocked</h3>
+          <p>Search any niche, any city, any country. If it's on Maps, we extract it.</p>
+        </div>
+        <div class="card-visual">
+          <!-- Animated Globe SVG -->
+          <svg class="globe-svg" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="80" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <ellipse cx="100" cy="100" rx="80" ry="30" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="orbit orbit-1"/>
+            <ellipse cx="100" cy="100" rx="60" ry="80" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="orbit orbit-2"/>
+            <ellipse cx="100" cy="100" rx="80" ry="50" stroke="rgba(255,255,255,0.06)" stroke-width="1" class="orbit orbit-3"/>
+            <!-- Animated dots -->
+            <circle cx="100" cy="20" r="4" fill="white" class="dot dot-1"/>
+            <circle cx="180" cy="100" r="3" fill="white" class="dot dot-2"/>
+            <circle cx="60" cy="150" r="3" fill="white" class="dot dot-3"/>
+            <circle cx="140" cy="60" r="2" fill="rgba(255,255,255,0.6)" class="dot dot-4"/>
+            <circle cx="40" cy="80" r="2" fill="rgba(255,255,255,0.4)" class="dot dot-5"/>
+          </svg>
         </div>
       </div>
 
-      <!-- Feature 2: Standard -->
-      <div class="feature-card glass-panel reveal-on-scroll">
-        <div class="card-content">
-          <div class="icon-box">
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-               <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
-               <circle cx="8.5" cy="7" r="4"></circle>
-               <path d="M20 8v6M23 11h-6"></path>
-             </svg>
-          </div>
+      <!-- Medium: Decision Makers with image -->
+      <div class="bento-card bento-medium has-image">
+        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop" alt="Business meeting" class="card-bg-image"/>
+        <div class="card-overlay">
+          <span class="card-number">02</span>
           <h3>Decision Makers</h3>
-          <p>We bypass generic `info@` emails. Our engine finds the Owner, CEO, or Founder's direct contact.</p>
+          <div class="stat-highlight">40%</div>
         </div>
       </div>
 
-      <!-- Feature 3: Standard -->
-      <div class="feature-card glass-panel reveal-on-scroll">
-        <div class="card-content">
-          <div class="icon-box">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 12l2 2 4-4"></path>
-              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-            </svg>
+      <!-- Medium: Verification with animated check -->
+      <div class="bento-card bento-medium">
+        <span class="card-number">03</span>
+        <h3>Triple Verified</h3>
+        <div class="verification-visual">
+          <svg class="check-anim" viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="28" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+            <circle cx="30" cy="30" r="28" stroke="white" stroke-width="2" class="check-circle"/>
+            <path d="M18 30 L26 38 L42 22" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="check-mark"/>
+          </svg>
+        </div>
+        <div class="stat-highlight">90%+</div>
+      </div>
+
+      <!-- Wide: Integrations with logos -->
+      <div class="bento-card bento-wide">
+        <div class="integration-content">
+          <h3>CRM-Ready</h3>
+          <p>Export to your favorite tools</p>
+        </div>
+        <div class="integration-flow">
+          <!-- Animated data flow -->
+          <svg class="flow-svg" viewBox="0 0 300 60" fill="none">
+            <line x1="0" y1="30" x2="300" y2="30" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <circle cx="50" cy="30" r="8" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            <circle cx="150" cy="30" r="8" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            <circle cx="250" cy="30" r="8" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            <circle r="4" fill="white" class="flow-dot flow-dot-1"/>
+            <circle r="3" fill="rgba(255,255,255,0.6)" class="flow-dot flow-dot-2"/>
+            <circle r="3" fill="rgba(255,255,255,0.4)" class="flow-dot flow-dot-3"/>
+          </svg>
+          <div class="integration-names">
+            <span>HubSpot</span>
+            <span>Salesforce</span>
+            <span>Sheets</span>
           </div>
-          <h3>Triple Verification</h3>
-          <p>SMTP checks, catch-all detection, and syntax validation. We guarantee 90%+ deliverability.</p>
         </div>
       </div>
 
-      <!-- Feature 4: Wide -->
-      <div class="feature-card wide glass-panel reveal-on-scroll">
-        <div class="card-content flex-row">
-          <div class="text-side">
-            <div class="icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-              </svg>
-            </div>
-            <h3>CRM Ready Export</h3>
-            <p>Push leads directly to your favorite tools.</p>
-          </div>
-          <div class="integrations-visual">
-            <div class="logo-grid">
-              <span>HubSpot</span>
-              <span>Salesforce</span>
-              <span>Pipedrive</span>
-              <span>Clay</span>
-            </div>
-          </div>
-        </div>
+      <!-- Small: 3-in-1 with icon -->
+      <div class="bento-card bento-small">
+        <svg class="icon-svg" viewBox="0 0 40 40" fill="none">
+          <rect x="4" y="4" width="12" height="12" rx="2" stroke="white" stroke-width="1.5" class="icon-box box-1"/>
+          <rect x="20" y="4" width="12" height="12" rx="2" stroke="white" stroke-width="1.5" class="icon-box box-2"/>
+          <rect x="12" y="20" width="12" height="12" rx="2" stroke="white" stroke-width="1.5" class="icon-box box-3"/>
+        </svg>
+        <span class="small-label">3-in-1</span>
+        <p>Scrape + Enrich + Verify</p>
       </div>
+
+      <!-- Small: Real-time with pulse -->
+      <div class="bento-card bento-small">
+        <svg class="pulse-svg" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="4" fill="white"/>
+          <circle cx="20" cy="20" r="10" stroke="white" stroke-width="1" class="pulse-ring ring-1"/>
+          <circle cx="20" cy="20" r="16" stroke="rgba(255,255,255,0.5)" stroke-width="1" class="pulse-ring ring-2"/>
+        </svg>
+        <span class="small-label">Real-time</span>
+        <p>Live data extraction</p>
+      </div>
+
     </div>
 
-    <!-- Comparison Table (Restored) -->
-    <div class="comparison-section reveal-on-scroll">
-      <h3 class="comparison-title">Why switch from the competition?</h3>
-      <div class="comparison-table">
-        <div class="comparison-row header">
-          <span></span>
-          <span>PullLeads</span>
-          <span>Apollo</span>
-          <span>Hunter</span>
-        </div>
-        <div class="comparison-row">
-          <span>Google Maps scraping</span>
-          <span class="yes">✓ Yes</span>
-          <span class="no">✗ No</span>
-          <span class="no">✗ No</span>
-        </div>
-        <div class="comparison-row">
-          <span>Owner/Decision-maker emails</span>
-          <span class="yes">✓ Yes</span>
-          <span class="partial">~ Limited</span>
-          <span class="no">Generic only</span>
-        </div>
-        <div class="comparison-row">
-          <span>Built-in verification</span>
-          <span class="yes">✓ Yes</span>
-          <span class="partial">Extra cost</span>
-          <span class="partial">Basic</span>
-        </div>
-        <div class="comparison-row">
-          <span>Fresh, on-demand data</span>
-          <span class="yes">✓ Yes</span>
-          <span class="no">Database</span>
-          <span class="no">Database</span>
-        </div>
-        <div class="comparison-row">
-          <span>Starting price</span>
-          <span class="highlight">$49/mo</span>
-          <span>$99/mo</span>
-          <span>$49/mo</span>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
 <style>
-  .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
-  .mb-16 { margin-bottom: 4rem; }
-  .mb-4 { margin-bottom: 1rem; }
-  .text-center { text-align: center; }
-  .max-w-2xl { max-width: 42rem; }
-  .mx-auto { margin-left: auto; margin-right: auto; }
+  .features-section {
+    padding: 8rem 0;
+  }
 
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0;
+  }
+
+  .accent-serif {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Bento Grid */
   .bento-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(180px, auto);
+    gap: 1rem;
   }
 
-  @media (min-width: 768px) {
-    .bento-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: auto auto;
-    }
-    
-    .feature-card.large {
-      grid-row: span 2;
-    }
-    
-    .feature-card.wide {
-      grid-column: span 2;
-    }
-  }
+  .bento-large { grid-column: span 2; grid-row: span 2; }
+  .bento-medium { grid-column: span 1; }
+  .bento-wide { grid-column: span 2; }
+  .bento-small { grid-column: span 1; }
 
-  @media (min-width: 1024px) {
-    .bento-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .feature-card.wide {
-      grid-column: span 2;
-    }
-  }
-
-  .feature-card {
-    padding: 2rem;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .feature-card:hover {
-    border-color: rgba(255,255,255,0.25);
-    transform: translateY(-5px);
-  }
-
-  /* Glow effect on hover */
-  .feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%);
-    opacity: 0;
-    transition: opacity 0.5s;
-    pointer-events: none;
-  }
-
-  .feature-card:hover::before {
-    opacity: 1;
-  }
-
-  .card-content {
+  /* Card Base */
+  .bento-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .bento-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .card-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.25);
+    margin-bottom: 0.75rem;
+  }
+
+  .bento-card h3 {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .bento-card p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Large Card */
+  .bento-large {
+    padding: 2rem;
+  }
+
+  .bento-large .card-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .bento-large h3 {
+    font-size: 1.5rem;
+  }
+
+  .bento-large p {
+    max-width: 240px;
+  }
+
+  .card-visual {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 220px;
+    height: 220px;
+    opacity: 0.8;
+  }
+
+  /* Globe SVG Animation */
+  .globe-svg {
+    width: 100%;
     height: 100%;
   }
 
-  .icon-box {
-    width: 48px;
-    height: 48px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
+  .orbit {
+    transform-origin: center;
   }
 
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    font-family: 'Outfit', sans-serif;
-  }
+  .orbit-1 { animation: rotate 20s linear infinite; }
+  .orbit-2 { animation: rotate 25s linear infinite reverse; }
+  .orbit-3 { animation: rotate 30s linear infinite; }
 
-  .visual-mockup {
-    margin-top: auto;
-    height: 120px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
-  }
-
-  .map-dots {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .dot {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: var(--accent-glow);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--accent-glow);
+    animation: pulse-dot 3s ease-in-out infinite;
   }
 
-  .d1 { top: 30%; left: 20%; animation: blink 3s infinite; }
-  .d2 { top: 60%; left: 70%; animation: blink 3s infinite 1s; }
-  .d3 { top: 40%; left: 50%; animation: blink 3s infinite 2s; }
+  .dot-1 { animation-delay: 0s; }
+  .dot-2 { animation-delay: 0.5s; }
+  .dot-3 { animation-delay: 1s; }
+  .dot-4 { animation-delay: 1.5s; }
+  .dot-5 { animation-delay: 2s; }
 
-  @keyframes blink { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
 
-  .integrations-visual {
+  /* Card with image */
+  .has-image {
+    padding: 0;
+  }
+
+  .card-bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    opacity: 0.3;
+    transition: all 0.4s ease;
+  }
+
+  .has-image:hover .card-bg-image {
+    opacity: 0.4;
+    filter: grayscale(80%);
+  }
+
+  .card-overlay {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  }
+
+  /* Verification visual */
+  .verification-visual {
     flex: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
-  .logo-grid {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+  .check-anim {
+    width: 60px;
+    height: 60px;
   }
 
-  .logo-grid span {
-    padding: 0.5rem 1rem;
-    background: rgba(255,255,255,0.05);
-    border-radius: 6px;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
+  .check-circle {
+    stroke-dasharray: 176;
+    stroke-dashoffset: 176;
+    animation: draw-circle 1.5s ease forwards;
+    animation-delay: 0.5s;
   }
 
-  @media (min-width: 768px) {
-    .card-content.flex-row {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .text-side { flex: 1; }
+  .check-mark {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: draw-check 0.5s ease forwards;
+    animation-delay: 1.5s;
   }
 
-  /* Comparison Table */
-  .comparison-section {
-    margin-top: 5rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+  @keyframes draw-circle {
+    to { stroke-dashoffset: 0; }
   }
 
-  .comparison-title {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    color: var(--text-primary);
+  @keyframes draw-check {
+    to { stroke-dashoffset: 0; }
   }
 
-  .comparison-table {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
+  .bento-card:hover .check-circle,
+  .bento-card:hover .check-mark {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 
-  .comparison-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-subtle);
-    font-size: 0.9rem;
+  /* Stat Highlight */
+  .stat-highlight {
+    margin-top: auto;
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.03em;
+  }
+
+  /* Wide Card - Integrations */
+  .bento-wide {
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
   }
 
-  .comparison-row:last-child {
-    border-bottom: none;
+  .integration-content h3 {
+    margin-bottom: 0.25rem;
   }
 
-  .comparison-row.header {
-    background: rgba(255,255,255,0.03);
-    font-weight: 600;
-    color: var(--text-primary);
+  .integration-flow {
+    flex: 1;
+    max-width: 300px;
   }
 
-  .comparison-row span:first-child {
-    color: var(--text-secondary);
+  .flow-svg {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 0.5rem;
   }
 
-  .comparison-row span:not(:first-child) {
+  .flow-dot {
+    animation: flow 3s ease-in-out infinite;
+  }
+
+  .flow-dot-1 { animation-delay: 0s; }
+  .flow-dot-2 { animation-delay: 0.3s; }
+  .flow-dot-3 { animation-delay: 0.6s; }
+
+  @keyframes flow {
+    0% { cx: 20; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { cx: 280; opacity: 0; }
+  }
+
+  .integration-names {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+  }
+
+  .integration-names span {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* Small Cards */
+  .bento-small {
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    gap: 0.75rem;
   }
 
-  .yes { color: #34D399; font-weight: 600; }
-  .no { color: var(--text-muted); }
-  .partial { color: #FBBF24; }
-  .highlight { color: var(--accent-glow); font-weight: 700; }
+  .small-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .bento-small p {
+    font-size: 0.85rem;
+  }
+
+  .icon-svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .icon-box {
+    opacity: 0;
+    animation: pop-in 0.3s ease forwards;
+  }
+
+  .box-1 { animation-delay: 0.2s; }
+  .box-2 { animation-delay: 0.4s; }
+  .box-3 { animation-delay: 0.6s; }
+
+  @keyframes pop-in {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .pulse-svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .pulse-ring {
+    transform-origin: center;
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  .ring-1 { animation-delay: 0s; }
+  .ring-2 { animation-delay: 0.5s; }
+
+  @keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .bento-large { grid-column: span 2; grid-row: span 1; }
+    .bento-wide { grid-column: span 2; }
+
+    .card-visual {
+      width: 150px;
+      height: 150px;
+      right: -10px;
+      bottom: -10px;
+    }
+  }
 
   @media (max-width: 600px) {
-    .comparison-row {
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      padding: 0.75rem 1rem;
-      font-size: 0.8rem;
-    }
+    .bento-grid { grid-template-columns: 1fr; }
+    .bento-large, .bento-wide, .bento-medium, .bento-small { grid-column: span 1; }
+    .bento-wide { flex-direction: column; text-align: center; }
+    .integration-flow { max-width: 100%; }
   }
 </style>
-
-<script>
-  // Mouse tracking for glow effect
-  document.querySelectorAll('.feature-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = (card as HTMLElement).getBoundingClientRect();
-      const x = (e as MouseEvent).clientX - rect.left;
-      const y = (e as MouseEvent).clientY - rect.top;
-      (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
-      (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
-    });
-  });
-</script>

@@ -4,42 +4,45 @@
  * UPDATED: B2B/SaaS Professional (Satoshi + Inter)
  */
 
-@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Typography: Editorial Mix */
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
-  /* COLORS: Deep, Rich, Cinematic */
-  --bg-main: #030304;
-  --bg-secondary: #0A0A0C;
-  --bg-card: rgba(255, 255, 255, 0.03);
-  --bg-card-hover: rgba(255, 255, 255, 0.06);
-  
-  /* TEXT */
-  --text-primary: #F2F2F2;
-  --text-secondary: #A1A1AA;
-  --text-muted: #52525B;
-  --text-accent: #FFFFFF;
+  /* COLORS: Monochrome / Neutral */
+  --bg-main: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: rgba(255, 255, 255, 0.02);
+  --bg-card-hover: rgba(255, 255, 255, 0.05);
 
-  /* ACCENTS: Professional Blue Gradient */
-  --accent-primary: #0066FF; /* Primary Blue */
-  --accent-secondary: #00A3FF; /* Sky Blue */
-  --accent-glow: #3B82F6;
-  --accent-gradient: linear-gradient(135deg, #0066FF 0%, #00A3FF 100%);
-  --surface-gradient: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+  /* TEXT */
+  --text-primary: #ffffff;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+  --text-accent: #ffffff;
+
+  /* ACCENTS: Monochrome */
+  --accent-primary: #ffffff;
+  --accent-secondary: #e5e5e5;
+  --accent-glow: #ffffff;
+  --accent-gradient: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%);
+  --surface-gradient: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
 
   /* BORDERS */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-highlight: rgba(255, 255, 255, 0.15);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-highlight: rgba(255, 255, 255, 0.12);
 
   /* SPACING & RADIUS */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-full: 9999px;
-  
+
   --container-width: 1280px;
   --container-padding: 2rem;
-  
+
   /* ANIMATIONS */
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
@@ -52,7 +55,7 @@
 }
 
 html {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   background-color: var(--bg-main);
   color: var(--text-primary);
   scroll-behavior: smooth;
@@ -99,37 +102,44 @@ body::after {
 
 /* TYPOGRAPHY */
 h1, h2, h3, h4, h5 {
-  font-family: 'Satoshi', sans-serif;
+  font-family: 'Cabinet Grotesk', sans-serif;
   color: var(--text-primary);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 h1 {
   font-size: clamp(3rem, 6vw, 5.5rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 800;
+  letter-spacing: -0.04em;
 }
 
 h2 {
   font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 h3 {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 500;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 700;
 }
 
 p {
   color: var(--text-secondary);
-  font-size: 1.125rem;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-.font-serif {
-  font-family: 'Satoshi', sans-serif;
+/* Serif accent for contrast */
+.font-serif, .accent-serif {
+  font-family: 'Instrument Serif', serif;
   font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
+}
+
+/* Mono */
+code, .mono {
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 /* UTILITIES */
@@ -221,4 +231,76 @@ p {
 .reveal-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* LIQUID GLASS 2026 */
+.liquid-glass {
+  position: relative;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 2rem;
+  box-shadow: 
+    0 8px 32px rgba(0, 102, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: liquid-shine 8s ease-in-out infinite;
+}
+
+ @keyframes liquid-shine {
+  0%, 100% { left: -50%; opacity: 0; }
+  50% { left: 100%; opacity: 1; }
+}
+
+/* Glass with refraction edge effect */
+.liquid-glass-refract {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(0, 102, 255, 0.1) 100%
+  );
+  backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 24px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 80px rgba(0, 102, 255, 0.1);
+}
+
+/* Specular highlight */
+.liquid-glass-refract::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 100%
+  );
+  border-radius: 24px 24px 0 0;
+  pointer-events: none;
 }

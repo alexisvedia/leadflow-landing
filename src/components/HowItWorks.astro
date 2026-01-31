@@ -1,181 +1,175 @@
 ---
 ---
-<section id="how-it-works" class="section-padding">
+
+<section id="how-it-works" class="how-section">
   <div class="container">
-    <div class="section-title reveal-on-scroll">
-      <h2>From search to spreadsheet <br />in <span class="text-gradient">three steps.</span></h2>
+
+    <div class="section-header">
+      <span class="section-label">How it works</span>
+      <h2>From search to spreadsheet<br><span class="accent-serif">in three steps</span></h2>
     </div>
 
-    <div class="timeline">
-      <div class="line"></div>
-      
-      <!-- Step 1 -->
-      <div class="step reveal-on-scroll">
-        <div class="step-marker">01</div>
-        <div class="step-content glass-panel">
-          <div class="step-text">
-            <h3>Search & Select</h3>
-            <p>Enter your niche keywords and location in Google Maps. "Marketing Agencies in New York".</p>
-          </div>
-          <div class="step-visual">
-            <div class="search-bar-mock">
-              <span class="icon">🔍</span>
-              <span class="text">Marketing Agencies...</span>
-            </div>
-          </div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-number">01</div>
+        <div class="step-content">
+          <h3>Search</h3>
+          <p>Enter your niche and location. "Plumbers in Austin" or "Dentists in Miami".</p>
         </div>
       </div>
 
-      <!-- Step 2 -->
-      <div class="step reveal-on-scroll">
-        <div class="step-marker">02</div>
-        <div class="step-content glass-panel right">
-          <div class="step-visual">
-            <div class="extraction-mock">
-              <div class="row"></div>
-              <div class="row"></div>
-              <div class="row active"></div>
-            </div>
-          </div>
-          <div class="step-text">
-            <h3>Extract & Enrich</h3>
-            <p>Our engine scrapes the results and cross-references 50+ data sources to find owner emails.</p>
-          </div>
+      <div class="step-line"></div>
+
+      <div class="step">
+        <div class="step-number">02</div>
+        <div class="step-content">
+          <h3>Extract</h3>
+          <p>Our engine scrapes results and finds decision-maker emails from 50+ sources.</p>
         </div>
       </div>
 
-      <!-- Step 3 -->
-      <div class="step reveal-on-scroll">
-        <div class="step-marker">03</div>
-        <div class="step-content glass-panel">
-          <div class="step-text">
-            <h3>Verify & Export</h3>
-            <p>Data is verified in real-time. Download your clean CSV or sync directly to your CRM.</p>
-          </div>
-          <div class="step-visual">
-            <div class="btn-mock">Download CSV</div>
-          </div>
+      <div class="step-line"></div>
+
+      <div class="step">
+        <div class="step-number">03</div>
+        <div class="step-content">
+          <h3>Export</h3>
+          <p>Download verified leads as CSV or sync directly to your CRM.</p>
         </div>
       </div>
 
     </div>
+
+    <div class="section-cta">
+      <a href="https://console.apify.com/actors/U1NdkcLzWXOfhQ7iM" target="_blank" class="cta-btn">
+        Try Free — No Credit Card
+      </a>
+    </div>
+
   </div>
 </section>
 
 <style>
-  .section-padding { padding: 6rem 0; }
-  
-  .section-title {
+  .how-section {
+    padding: 8rem 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-header {
     text-align: center;
     margin-bottom: 5rem;
   }
 
-  .timeline {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 0;
+  .section-label {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
   }
 
-  .line {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(180deg, transparent, var(--accent-primary), transparent);
-    transform: translateX(-50%);
-    z-index: 0;
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0;
+  }
+
+  .accent-serif {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
   }
 
   .step {
-    position: relative;
-    margin-bottom: 4rem;
-    display: flex;
-    justify-content: center;
-    z-index: 1;
-  }
-
-  .step-marker {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 40px;
-    background: var(--bg-main);
-    border: 1px solid var(--accent-primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--text-primary);
-    box-shadow: 0 0 20px rgba(0, 102, 255, 0.2);
-  }
-
-  .step-content {
-    width: 45%;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-right: auto; /* Left side by default */
-  }
-
-  .step-content.right {
-    margin-right: 0;
-    margin-left: auto;
-  }
-
-  .step-text h3 {
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
-  }
-
-  /* Visual Mocks */
-  .search-bar-mock {
-    background: rgba(255,255,255,0.05);
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-
-  .extraction-mock .row {
-    height: 8px;
-    background: rgba(255,255,255,0.1);
-    margin-bottom: 6px;
-    border-radius: 4px;
-    width: 100%;
-  }
-
-  .extraction-mock .row.active {
-    background: var(--accent-primary);
-    width: 70%;
-  }
-
-  .btn-mock {
-    background: var(--accent-primary);
-    color: white;
+    flex: 1;
     text-align: center;
-    padding: 0.5rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-weight: 600;
   }
 
-  @media (max-width: 768px) {
-    .line { left: 20px; }
-    .step-marker { left: 20px; }
-    .step-content {
-      width: calc(100% - 60px);
-      margin-left: 60px !important;
+  .step-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 1.5rem;
+  }
+
+  .step-content h3 {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .step-content p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+    margin: 0;
+    max-width: 220px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .step-line {
+    width: 60px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 2.5rem;
+    flex-shrink: 0;
+  }
+
+  /* CTA */
+  .section-cta {
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    padding: 0.875rem 1.75rem;
+    background: #fff;
+    color: #000;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .cta-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .steps {
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .step-line {
+      width: 1px;
+      height: 40px;
+      margin: 0;
     }
   }
 </style>

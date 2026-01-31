@@ -1,314 +1,595 @@
 ---
 ---
-<section class="hero-section">
-  <div class="container hero-grid">
-    <div class="hero-content reveal-on-scroll">
-      <div class="badge-pill">
-        <span class="pulse"></span>
-        v2.0 Now Available
-      </div>
-      
-      <h1>
-        Extract leads <br />
-        <span class="font-serif text-gradient">with precision.</span>
-      </h1>
-      
-      <p class="hero-sub">
-        Access 200M+ verified business contacts directly from Google Maps. 
-        Enrich with owner emails and sync to your CRM in seconds.
-      </p>
 
-      <div class="cta-group">
-        <a href="https://console.apify.com/actors/U1NdkcLzWXOfhQ7iM" target="_blank" class="btn btn-primary">Try Free on Apify</a>
-        <div class="user-proof">
-          <div class="avatars">
-            <span class="avatar" style="background-image: url('https://i.pravatar.cc/100?img=1');"></span>
-            <span class="avatar" style="background-image: url('https://i.pravatar.cc/100?img=2');"></span>
-            <span class="avatar" style="background-image: url('https://i.pravatar.cc/100?img=3');"></span>
+<section class="hero">
+  <div class="hero-container">
+    <div class="hero-grid">
+
+      <!-- Left Column -->
+      <div class="hero-content">
+        <div class="trust-badge">
+          <span class="badge-dot"></span>
+          <span>Trusted by 1,200+ agencies</span>
+        </div>
+
+        <h1>Extract verified B2B leads from Google Maps</h1>
+
+        <p class="hero-subtitle">
+          Owner emails, not generic contacts. Triple-verified with 90%+ deliverability.
+        </p>
+
+        <div class="cta-group">
+          <a href="https://console.apify.com/actors/U1NdkcLzWXOfhQ7iM" target="_blank" class="btn-primary">
+            Start Extracting Free
+          </a>
+          <a href="#how-it-works" class="btn-secondary">
+            See How It Works
+          </a>
+        </div>
+
+        <div class="trust-logos">
+          <span class="trust-label">Works with</span>
+          <div class="logos">
+            <span>HubSpot</span>
+            <span>Salesforce</span>
+            <span>Sheets</span>
+            <span>Airtable</span>
           </div>
-          <span class="proof-text">Trusted by 1000+ agencies</span>
         </div>
       </div>
-    </div>
 
-    <div class="hero-visual reveal-on-scroll">
-      <div class="app-window glass-panel">
-        <div class="window-header">
-          <div class="dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="address-bar">pullleads.com/dashboard</div>
-        </div>
-        <div class="window-content">
-          <!-- Mock Interface -->
-          <div class="interface-grid">
-            <div class="sidebar glass-panel"></div>
-            <div class="main-view">
-              <div class="data-row header">
-                <span>Business Name</span>
-                <span>Decision Maker</span>
-                <span>Status</span>
-              </div>
-              <div class="data-row">
-                <span class="business">Apex Digital</span>
-                <span class="email">sarah@apex.com</span>
-                <span class="tag success">Verified</span>
-              </div>
-              <div class="data-row">
-                <span class="business">Horizon Labs</span>
-                <span class="email">mike@horizon.io</span>
-                <span class="tag success">Verified</span>
-              </div>
-              <div class="data-row">
-                <span class="business">Velvet Studio</span>
-                <span class="email">info@velvet.co</span>
-                <span class="tag warning">Catch-all</span>
-              </div>
-               <div class="data-row active-scan">
-                <span class="loading-bar"></span>
-              </div>
+      <!-- Right Column: Product Preview -->
+      <div class="hero-visual">
+        <div class="preview-window">
+          <div class="window-header">
+            <div class="window-dots">
+              <span></span><span></span><span></span>
             </div>
           </div>
+          <div class="preview-content">
+            <!-- Search animation -->
+            <div class="search-row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+              <span class="search-text">Plumbers in Austin, TX</span>
+              <span class="search-btn">Extract</span>
+            </div>
+
+            <!-- Results with animation -->
+            <div class="results">
+              <div class="result-item">
+                <div class="result-avatar">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face" alt="" />
+                </div>
+                <div class="result-info">
+                  <span class="result-name">Johnson's Plumbing</span>
+                  <span class="result-email">mike@johnsonplumbing.com</span>
+                </div>
+                <span class="result-tag">Owner</span>
+              </div>
+              <div class="result-item">
+                <div class="result-avatar">
+                  <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face" alt="" />
+                </div>
+                <div class="result-info">
+                  <span class="result-name">Austin Pro Plumbers</span>
+                  <span class="result-email">david@austinpro.com</span>
+                </div>
+                <span class="result-tag">CEO</span>
+              </div>
+              <div class="result-item faded">
+                <div class="result-avatar">
+                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=face" alt="" />
+                </div>
+                <div class="result-info">
+                  <span class="result-name">West Plumbing Services</span>
+                  <span class="result-email">sarah@westplumbing.com</span>
+                </div>
+                <span class="result-tag">Founder</span>
+              </div>
+            </div>
+
+            <!-- Animated scan line -->
+            <div class="scan-line"></div>
+          </div>
         </div>
-        
-        <!-- Floating Elements -->
-        <div class="floating-card stat-card glass-panel">
-          <span class="stat-label">Success Rate</span>
-          <span class="stat-value">98.2%</span>
+
+        <!-- Floating stats -->
+        <div class="floating-stat stat-1">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <div class="stat-content">
+            <span class="stat-value">90%+</span>
+            <span class="stat-label">Verified</span>
+          </div>
+        </div>
+
+        <div class="floating-stat stat-2">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <div class="stat-content">
+            <span class="stat-value">~30s</span>
+            <span class="stat-label">Speed</span>
+          </div>
         </div>
       </div>
+
     </div>
+
+    <!-- Bottom bar -->
+    <div class="hero-bottom">
+      <div class="bottom-stat">
+        <span class="num">200M+</span>
+        <span class="label">Data points</span>
+      </div>
+      <div class="bottom-divider"></div>
+      <div class="bottom-stat">
+        <span class="num">40%</span>
+        <span class="label">Owner emails</span>
+      </div>
+      <div class="bottom-divider"></div>
+      <div class="bottom-stat">
+        <span class="num">3-in-1</span>
+        <span class="label">Scrape + Enrich + Verify</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <style>
-  .hero-section {
+  .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding-top: 6rem;
+    padding: 7rem 0 4rem;
     position: relative;
-    overflow: hidden;
+  }
+
+  .hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
   }
 
   .hero-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1.1fr;
     gap: 4rem;
     align-items: center;
   }
 
-  @media (min-width: 992px) {
-    .hero-grid {
-      grid-template-columns: 1.1fr 1fr;
-    }
+  /* Left Column */
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  /* CONTENT */
-  .badge-pill {
+  .trust-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 99px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-subtle);
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
+    width: fit-content;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
-  .pulse {
-    width: 8px;
-    height: 8px;
-    background: var(--accent-glow);
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    background: #fff;
     border-radius: 50%;
-    box-shadow: 0 0 0 rgba(59, 130, 246, 0.4);
-    animation: pulse 2s infinite;
+    animation: blink 2s infinite;
   }
 
-  .hero-sub {
-    margin: 2rem 0;
-    max-width: 90%;
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #fff;
+    margin: 0;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 400px;
+    margin: 0;
   }
 
   .cta-group {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 1rem;
-  }
-
-  /* PROOF */
-  .user-proof {
-    display: flex;
-    align-items: center;
     gap: 1rem;
+    margin-top: 0.5rem;
   }
 
-  .avatars {
+  .btn-primary {
+    display: inline-flex;
+    padding: 0.875rem 1.5rem;
+    background: #fff;
+    color: #000;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    padding: 0.875rem 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .trust-logos {
     display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-size: cover;
-    border: 2px solid var(--bg-main);
-    margin-left: -10px;
-  }
-  .avatar:first-child { margin-left: 0; }
-
-  .proof-text {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
+  .trust-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
-  /* VISUAL - APP WINDOW */
+  .logos {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .logos span {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.25);
+    font-weight: 500;
+  }
+
+  /* Right Column: Visual */
   .hero-visual {
     position: relative;
-    perspective: 1000px;
   }
 
-  .app-window {
-    width: 100%;
-    aspect-ratio: 4/3;
-    position: relative;
-    transform: rotateY(-12deg) rotateX(5deg);
-    transition: transform 0.5s ease;
-    box-shadow: 
-      0 0 0 1px rgba(255,255,255,0.1),
-      0 20px 50px rgba(0,0,0,0.5);
-    background: rgba(10, 10, 12, 0.8);
-  }
-
-  .hero-visual:hover .app-window {
-    transform: rotateY(-8deg) rotateX(2deg);
-  }
-
-  .window-header {
-    height: 48px;
-    border-bottom: 1px solid var(--border-subtle);
-    display: flex;
-    align-items: center;
-    padding: 0 1.5rem;
-    gap: 1.5rem;
-  }
-
-  .dots { display: flex; gap: 6px; }
-  .dots span { width: 10px; height: 10px; border-radius: 50%; background: #333; }
-  .dots span:nth-child(1) { background: #FF5F57; }
-  .dots span:nth-child(2) { background: #FEBC2E; }
-  .dots span:nth-child(3) { background: #28C840; }
-
-  .address-bar {
-    flex: 1;
-    height: 24px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 4px;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    padding-left: 1rem;
-    color: var(--text-muted);
-  }
-
-  .window-content {
-    padding: 1.5rem;
-    height: calc(100% - 48px);
-  }
-
-  .interface-grid {
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    gap: 1.5rem;
-    height: 100%;
-  }
-
-  .sidebar { height: 100%; border-radius: 8px; }
-
-  .data-row {
-    display: grid;
-    grid-template-columns: 1.5fr 1.5fr 1fr;
-    padding: 1rem;
-    border-bottom: 1px solid var(--border-subtle);
-    font-size: 0.85rem;
-    align-items: center;
-  }
-
-  .data-row.header {
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 600;
-  }
-  
-  .tag.success { background: rgba(16, 185, 129, 0.2); color: #34D399; }
-  .tag.warning { background: rgba(245, 158, 11, 0.2); color: #FBBF24; }
-
-  .loading-bar {
-    height: 8px;
-    width: 60%;
-    background: var(--border-subtle);
-    border-radius: 4px;
-    position: relative;
+  .preview-window {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
     overflow: hidden;
   }
 
-  .loading-bar::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--accent-gradient);
-    width: 40%;
-    animation: load 2s infinite ease-in-out;
+  .window-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
   }
 
-  /* FLOATERS */
-  .floating-card {
-    position: absolute;
-    bottom: -20px;
-    right: -20px;
-    padding: 1.5rem;
+  .window-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .window-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .preview-content {
+    padding: 1.25rem;
+    position: relative;
+  }
+
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .search-row svg {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .search-text {
+    flex: 1;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .search-btn {
+    padding: 0.4rem 0.875rem;
+    background: #fff;
+    color: #000;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+  }
+
+  .results {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    transform: translateZ(50px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   }
 
-  .stat-value {
-    font-family: 'Outfit', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--accent-glow);
+  .result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    animation: slide-in 0.5s ease forwards;
+    opacity: 0;
+    transform: translateX(-10px);
   }
 
-  .stat-label {
+  .result-item:nth-child(1) { animation-delay: 0.2s; }
+  .result-item:nth-child(2) { animation-delay: 0.4s; }
+  .result-item:nth-child(3) { animation-delay: 0.6s; }
+
+  @keyframes slide-in {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .result-item.faded {
+    opacity: 0.4;
+  }
+
+  .result-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .result-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+
+  .result-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .result-name {
+    display: block;
     font-size: 0.85rem;
-    color: var(--text-muted);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .result-email {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .result-tag {
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    flex-shrink: 0;
+  }
+
+  /* Scan line animation */
+  .scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: scan 3s ease-in-out infinite;
+  }
+
+  @keyframes scan {
+    0%, 100% { top: 20%; opacity: 0; }
+    50% { top: 80%; opacity: 1; }
+  }
+
+  /* Floating stats */
+  .floating-stat {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 0.875rem;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .stat-1 {
+    top: -10px;
+    right: -20px;
+    animation-delay: 0s;
+  }
+
+  .stat-2 {
+    bottom: 20px;
+    left: -30px;
+    animation-delay: 2s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .stat-icon {
+    width: 20px;
+    height: 20px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .stat-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .floating-stat .stat-value {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+  }
+
+  .floating-stat .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* Bottom bar */
+  .hero-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .bottom-stat {
+    text-align: center;
+  }
+
+  .bottom-stat .num {
+    display: block;
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.02em;
+  }
+
+  .bottom-stat .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+  .bottom-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
   }
 
-  @keyframes load {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(300%); }
+  /* Responsive */
+  @media (max-width: 1000px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .hero-content {
+      text-align: center;
+      align-items: center;
+    }
+
+    .hero-subtitle {
+      max-width: 500px;
+    }
+
+    .trust-logos {
+      justify-content: center;
+    }
+
+    .floating-stat {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 2.25rem;
+    }
+
+    .cta-group {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .hero-bottom {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .bottom-divider {
+      display: none;
+    }
   }
 </style>
