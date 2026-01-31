@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x"
+    },
+    "**/*.func/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
+}
