@@ -2,14 +2,27 @@ import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-11-20.acacia',
-});
+// Lazy initialization to avoid build-time errors
+let stripe: Stripe | null = null;
+function getStripe() {
+  if (!stripe && import.meta.env.STRIPE_SECRET_KEY) {
+    stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-11-20.acacia',
+    });
+  }
+  return stripe;
+}
 
-const supabase = createClient(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.SUPABASE_SERVICE_ROLE_KEY
-);
+let supabase: ReturnType<typeof createClient> | null = null;
+function getSupabase() {
+  if (!supabase && import.meta.env.PUBLIC_SUPABASE_URL) {
+    supabase = createClient(
+      import.meta.env.PUBLIC_SUPABASE_URL,
+      import.meta.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+  }
+  return supabase;
+}
 
 // Price IDs - replace with your actual Stripe price IDs
 const STRIPE_PRICES: Record<string, string> = {
@@ -19,6 +32,16 @@ const STRIPE_PRICES: Record<string, string> = {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const stripeClient = getStripe();
+  const supabaseClient = getSupabase();
+
+  if (!stripeClient || !supabaseClient) {
+    return new Response(JSON.stringify({ error: 'Service not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     // Get auth token from header
     const authHeader = request.headers.get('Authorization');
@@ -32,7 +55,7 @@ export const POST: APIRoute = async ({ request }) => {
     const token = authHeader.slice(7);
 
     // Verify the token
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
 
     if (authError || !user) {
       return new Response(JSON.stringify({ error: 'Invalid token' }), {
@@ -55,7 +78,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Get or create Stripe customer
     let stripeCustomerId: string;
 
-    const { data: profile } = await supabase
+    const { data: profile } = await supabaseClient
       .from('profiles')
       .select('stripe_customer_id')
       .eq('id', user.id)
@@ -65,7 +88,7 @@ export const POST: APIRoute = async ({ request }) => {
       stripeCustomerId = profile.stripe_customer_id;
     } else {
       // Create new Stripe customer
-      const customer = await stripe.customers.create({
+      const customer = await stripeClient.customers.create({
         email: user.email,
         metadata: {
           supabase_user_id: user.id,
@@ -75,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
       stripeCustomerId = customer.id;
 
       // Save to profile
-      await supabase
+      await supabaseClient
         .from('profiles')
         .update({ stripe_customer_id: stripeCustomerId })
         .eq('id', user.id);
@@ -84,7 +107,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Create checkout session
     const origin = request.headers.get('origin') || 'https://pulleads.com';
 
-    const session = await stripe.checkout.sessions.create({
+    const session = await stripeClient.checkout.sessions.create({
       mode: 'subscription',
       customer: stripeCustomerId,
       line_items: [

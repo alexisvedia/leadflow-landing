@@ -2,13 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 
-// Check if already logged in
-import { supabase } from '../../lib/supabase';
-
-const { data: { session } } = await supabase.auth.getSession();
-if (session) {
-  return Astro.redirect('/dashboard');
-}
+// Session check is done client-side via JavaScript
+// This avoids build-time errors when env vars are not available
 ---
 
 <Layout title="Login | PullLeads">
@@ -69,6 +64,15 @@ if (session) {
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
+
+  // Check if already logged in and redirect
+  async function checkSession() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      window.location.href = '/dashboard';
+    }
+  }
+  checkSession();
 
   const form = document.getElementById('login-form') as HTMLFormElement;
   const googleBtn = document.getElementById('google-btn') as HTMLButtonElement;

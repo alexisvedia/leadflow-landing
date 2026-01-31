@@ -1,15 +1,5 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.SUPABASE_SERVICE_ROLE_KEY
-);
-
-// Google service account credentials (from env)
-const GOOGLE_SERVICE_ACCOUNT = import.meta.env.GOOGLE_SERVICE_ACCOUNT_JSON
-  ? JSON.parse(import.meta.env.GOOGLE_SERVICE_ACCOUNT_JSON)
-  : null;
+import { getSupabaseServer } from '../../../lib/supabase-server';
 
 interface Lead {
   name: string;
@@ -25,6 +15,10 @@ interface Lead {
 
 // Get Google access token using service account
 async function getGoogleAccessToken(): Promise<string | null> {
+  const GOOGLE_SERVICE_ACCOUNT = import.meta.env.GOOGLE_SERVICE_ACCOUNT_JSON
+    ? JSON.parse(import.meta.env.GOOGLE_SERVICE_ACCOUNT_JSON)
+    : null;
+
   if (!GOOGLE_SERVICE_ACCOUNT) {
     console.error('Google service account not configured');
     return null;
@@ -99,6 +93,15 @@ function pemToArrayBuffer(pem: string): ArrayBuffer {
 
 // POST - Export leads to Google Sheets
 export const POST: APIRoute = async ({ request }) => {
+  const supabase = getSupabaseServer();
+
+  if (!supabase) {
+    return new Response(JSON.stringify({ error: 'Service not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {

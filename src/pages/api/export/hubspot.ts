@@ -1,10 +1,5 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.SUPABASE_SERVICE_ROLE_KEY
-);
+import { getSupabaseServer } from '../../../lib/supabase-server';
 
 interface Lead {
   name: string;
@@ -29,6 +24,15 @@ function splitName(fullName: string): { firstname: string; lastname: string } {
 
 // POST - Export leads to HubSpot
 export const POST: APIRoute = async ({ request }) => {
+  const supabase = getSupabaseServer();
+
+  if (!supabase) {
+    return new Response(JSON.stringify({ error: 'Service not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {

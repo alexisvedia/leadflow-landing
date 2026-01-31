@@ -1,9 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+// Lazy initialization for client-side Supabase
+let supabase: ReturnType<typeof createClient> | null = null;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export function getSupabase() {
+  if (!supabase) {
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && supabaseAnonKey) {
+      supabase = createClient(supabaseUrl, supabaseAnonKey);
+    }
+  }
+  return supabase;
+}
+
+// Export for backwards compatibility - will be null during build
+export { supabase };
 
 // Types for our database
 export interface Profile {
@@ -49,7 +62,10 @@ export const PLANS = {
 
 // Helper to get user's subscription
 export async function getUserSubscription(userId: string): Promise<Subscription | null> {
-  const { data, error } = await supabase
+  const client = getSupabase();
+  if (!client) return null;
+
+  const { data, error } = await client
     .from('subscriptions')
     .select('*')
     .eq('user_id', userId)
@@ -65,7 +81,10 @@ export async function getUserSubscription(userId: string): Promise<Subscription 
 
 // Helper to get user's profile
 export async function getUserProfile(userId: string): Promise<Profile | null> {
-  const { data, error } = await supabase
+  const client = getSupabase();
+  if (!client) return null;
+
+  const { data, error } = await client
     .from('profiles')
     .select('*')
     .eq('id', userId)
@@ -81,7 +100,10 @@ export async function getUserProfile(userId: string): Promise<Profile | null> {
 
 // Helper to get user's extractions
 export async function getUserExtractions(userId: string): Promise<Extraction[]> {
-  const { data, error } = await supabase
+  const client = getSupabase();
+  if (!client) return [];
+
+  const { data, error } = await client
     .from('extractions')
     .select('*')
     .eq('user_id', userId)

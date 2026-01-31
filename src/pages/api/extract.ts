@@ -1,15 +1,31 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.SUPABASE_SERVICE_ROLE_KEY
-);
-
-const APIFY_API_TOKEN = import.meta.env.APIFY_API_TOKEN;
-const APIFY_ACTOR_ID = import.meta.env.APIFY_ACTOR_ID || 'U1NdkcLzWXOfhQ7iM';
+// Lazy initialization to avoid build-time errors
+let supabase: ReturnType<typeof createClient> | null = null;
+function getSupabase() {
+  if (!supabase && import.meta.env.PUBLIC_SUPABASE_URL) {
+    supabase = createClient(
+      import.meta.env.PUBLIC_SUPABASE_URL,
+      import.meta.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+  }
+  return supabase;
+}
 
 export const POST: APIRoute = async ({ request }) => {
+  const supabaseClient = getSupabase();
+
+  if (!supabaseClient) {
+    return new Response(JSON.stringify({ error: 'Service not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  const APIFY_API_TOKEN = import.meta.env.APIFY_API_TOKEN;
+  const APIFY_ACTOR_ID = import.meta.env.APIFY_ACTOR_ID || 'U1NdkcLzWXOfhQ7iM';
+
   try {
     // Get auth token from header
     const authHeader = request.headers.get('Authorization');
@@ -23,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
     const token = authHeader.slice(7);
 
     // Verify the token
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
 
     if (authError || !user) {
       return new Response(JSON.stringify({ error: 'Invalid token' }), {
@@ -53,7 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
     const leadsRequested = Math.min(limit || 50, 500);
 
     // Check user's credits
-    const { data: subscription, error: subError } = await supabase
+    const { data: subscription, error: subError } = await supabaseClient
       .from('subscriptions')
       .select('credits_remaining')
       .eq('user_id', user.id)
@@ -76,7 +92,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Deduct credits
-    const { error: deductError } = await supabase
+    const { error: deductError } = await supabaseClient
       .from('subscriptions')
       .update({
         credits_remaining: subscription.credits_remaining - leadsRequested
@@ -91,7 +107,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Create extraction record
-    const { data: extraction, error: insertError } = await supabase
+    const { data: extraction, error: insertError } = await supabaseClient
       .from('extractions')
       .insert({
         user_id: user.id,
@@ -108,7 +124,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (insertError || !extraction) {
       // Refund credits
-      await supabase
+      await supabaseClient
         .from('subscriptions')
         .update({
           credits_remaining: subscription.credits_remaining
@@ -153,7 +169,7 @@ export const POST: APIRoute = async ({ request }) => {
       const runId = apifyResult.data?.id;
 
       // Update extraction with run ID
-      await supabase
+      await supabaseClient
         .from('extractions')
         .update({
           status: 'running',
@@ -174,13 +190,13 @@ export const POST: APIRoute = async ({ request }) => {
 
     } catch (apifyError) {
       // Mark extraction as failed
-      await supabase
+      await supabaseClient
         .from('extractions')
         .update({ status: 'failed' })
         .eq('id', extraction.id);
 
       // Refund credits
-      await supabase
+      await supabaseClient
         .from('subscriptions')
         .update({
           credits_remaining: subscription.credits_remaining

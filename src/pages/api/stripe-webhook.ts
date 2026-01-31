@@ -2,16 +2,27 @@ import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-11-20.acacia',
-});
+// Lazy initialization to avoid build-time errors
+let stripe: Stripe | null = null;
+function getStripe() {
+  if (!stripe && import.meta.env.STRIPE_SECRET_KEY) {
+    stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-11-20.acacia',
+    });
+  }
+  return stripe;
+}
 
-const supabase = createClient(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.SUPABASE_SERVICE_ROLE_KEY
-);
-
-const WEBHOOK_SECRET = import.meta.env.STRIPE_WEBHOOK_SECRET;
+let supabase: ReturnType<typeof createClient> | null = null;
+function getSupabase() {
+  if (!supabase && import.meta.env.PUBLIC_SUPABASE_URL) {
+    supabase = createClient(
+      import.meta.env.PUBLIC_SUPABASE_URL,
+      import.meta.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+  }
+  return supabase;
+}
 
 // Credits per plan
 const PLAN_CREDITS: Record<string, number> = {
@@ -31,6 +42,14 @@ function getPlanFromPriceId(priceId: string): string {
 }
 
 export const POST: APIRoute = async ({ request }) => {
+  const stripeClient = getStripe();
+  const supabaseClient = getSupabase();
+
+  if (!stripeClient || !supabaseClient) {
+    return new Response('Service not configured', { status: 503 });
+  }
+
+  const WEBHOOK_SECRET = import.meta.env.STRIPE_WEBHOOK_SECRET;
   const body = await request.text();
   const sig = request.headers.get('stripe-signature');
 
@@ -41,7 +60,7 @@ export const POST: APIRoute = async ({ request }) => {
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, WEBHOOK_SECRET);
+    event = stripeClient.webhooks.constructEvent(body, sig, WEBHOOK_SECRET);
   } catch (err: any) {
     console.error('Webhook signature verification failed:', err.message);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
@@ -56,7 +75,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         if (userId && session.subscription) {
           // Update profile with new plan
-          await supabase
+          await supabaseClient
             .from('profiles')
             .update({
               plan,
@@ -69,7 +88,7 @@ export const POST: APIRoute = async ({ request }) => {
           const now = new Date();
           const endDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-          await supabase
+          await supabaseClient
             .from('subscriptions')
             .upsert({
               user_id: userId,
@@ -93,7 +112,7 @@ export const POST: APIRoute = async ({ request }) => {
           const subscriptionId = invoice.subscription as string;
 
           // Get subscription details
-          const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+          const subscription = await stripeClient.subscriptions.retrieve(subscriptionId);
           const priceId = subscription.items.data[0]?.price?.id;
           const plan = getPlanFromPriceId(priceId || '');
           const userId = subscription.metadata?.userId;
@@ -104,7 +123,7 @@ export const POST: APIRoute = async ({ request }) => {
             const now = new Date();
             const endDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-            await supabase
+            await supabaseClient
               .from('subscriptions')
               .update({
                 credits_remaining: credits,
@@ -126,7 +145,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         if (userId) {
           // Update plan in profile
-          await supabase
+          await supabaseClient
             .from('profiles')
             .update({ plan })
             .eq('id', userId);
@@ -134,7 +153,7 @@ export const POST: APIRoute = async ({ request }) => {
           // If upgraded, add additional credits
           const newCredits = PLAN_CREDITS[plan] || 1000;
 
-          const { data: currentSub } = await supabase
+          const { data: currentSub } = await supabaseClient
             .from('subscriptions')
             .select('credits_remaining, credits_total')
             .eq('user_id', userId)
@@ -143,7 +162,7 @@ export const POST: APIRoute = async ({ request }) => {
           if (currentSub && newCredits > currentSub.credits_total) {
             // User upgraded - add the difference
             const additionalCredits = newCredits - currentSub.credits_total;
-            await supabase
+            await supabaseClient
               .from('subscriptions')
               .update({
                 credits_remaining: currentSub.credits_remaining + additionalCredits,
@@ -161,7 +180,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         if (userId) {
           // Downgrade to free plan
-          await supabase
+          await supabaseClient
             .from('profiles')
             .update({ plan: 'free' })
             .eq('id', userId);

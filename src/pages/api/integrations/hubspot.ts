@@ -1,13 +1,17 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.SUPABASE_SERVICE_ROLE_KEY
-);
+import { getSupabaseServer } from '../../../lib/supabase-server';
 
 // POST - Connect HubSpot
 export const POST: APIRoute = async ({ request }) => {
+  const supabase = getSupabaseServer();
+
+  if (!supabase) {
+    return new Response(JSON.stringify({ error: 'Service not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {
@@ -87,6 +91,15 @@ export const POST: APIRoute = async ({ request }) => {
 
 // DELETE - Disconnect HubSpot
 export const DELETE: APIRoute = async ({ request }) => {
+  const supabase = getSupabaseServer();
+
+  if (!supabase) {
+    return new Response(JSON.stringify({ error: 'Service not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {
