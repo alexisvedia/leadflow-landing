@@ -15,14 +15,27 @@
 
       <div class="nav-actions">
         <a href="https://app.pullleads.com/login" class="login-link">Login</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfF99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-primary btn-sm">Get Started</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfG99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-primary btn-sm">Get Started</a>
       </div>
       
       <!-- Mobile Toggle -->
-      <button class="mobile-toggle" aria-label="Menu">
+      <button class="mobile-toggle" aria-label="Menu" aria-expanded="false">
         <span></span>
         <span></span>
       </button>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-menu glass-panel">
+      <nav>
+        <a href="#features" class="mobile-link">Features</a>
+        <a href="#how-it-works" class="mobile-link">How it works</a>
+        <a href="#pricing" class="mobile-link">Pricing</a>
+        <div class="mobile-actions">
+          <a href="https://app.pullleads.com/login" class="mobile-login">Login</a>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfG99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-primary btn-full">Get Started</a>
+        </div>
+      </nav>
     </div>
   </div>
 </header>
@@ -34,9 +47,9 @@
     left: 0;
     right: 0;
     z-index: 50;
-    padding-top: 1.5rem;
-    padding-left: var(--container-padding);
-    padding-right: var(--container-padding);
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .nav-island {
@@ -46,6 +59,10 @@
     padding: 0.75rem 1.5rem;
     border-radius: 999px; /* Pill shape */
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 52;
+    background: var(--bg-secondary); /* Ensure visibility */
+    border: 1px solid var(--border-subtle);
   }
 
   .logo {
@@ -97,6 +114,7 @@
     font-size: 0.9rem;
   }
 
+  /* Mobile Toggle */
   .mobile-toggle {
     display: flex;
     flex-direction: column;
@@ -105,6 +123,7 @@
     border: none;
     cursor: pointer;
     padding: 0.5rem;
+    z-index: 53;
   }
 
   .mobile-toggle span {
@@ -112,11 +131,116 @@
     height: 2px;
     background: var(--text-primary);
     border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-toggle[aria-expanded="true"] span:first-child {
+    transform: rotate(45deg) translate(5px, 6px);
+  }
+  
+  .mobile-toggle[aria-expanded="true"] span:last-child {
+    transform: rotate(-45deg) translate(5px, -6px);
+  }
+
+  /* Mobile Menu */
+  .mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    background: var(--bg-main);
+    border: 1px solid var(--border-subtle);
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 51;
+    visibility: hidden;
+  }
+
+  .mobile-menu.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+    visibility: visible;
+  }
+
+  .mobile-menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mobile-link {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .mobile-link:hover {
+    color: var(--text-primary);
+  }
+
+  .mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .mobile-login {
+    text-align: center;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem;
+  }
+
+  .btn-full {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
   }
 
   @media (min-width: 768px) {
+    .site-header {
+      padding-top: 1.5rem;
+      padding-left: var(--container-padding);
+      padding-right: var(--container-padding);
+    }
+    
+    .nav-island {
+      padding: 0.75rem 1.5rem;
+    }
+
     .desktop-nav { display: flex; }
     .login-link { display: block; }
     .mobile-toggle { display: none; }
+    .mobile-menu { display: none; }
   }
 </style>
+
+<script>
+  const toggle = document.querySelector('.mobile-toggle');
+  const menu = document.querySelector('.mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', (!isExpanded).toString());
+    menu?.classList.toggle('open');
+  });
+
+  // Close menu when clicking a link
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      toggle?.setAttribute('aria-expanded', 'false');
+      menu?.classList.remove('open');
+    });
+  });
+</script>

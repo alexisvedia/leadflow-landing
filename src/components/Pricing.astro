@@ -33,7 +33,7 @@
             <li class="dim"><span class="check">✕</span> No CRM Integration</li>
           </ul>
         </div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfF99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-secondary w-full">Get Started</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfG99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-secondary w-full">Get Started</a>
       </div>
 
       <!-- Pro -->
@@ -57,7 +57,7 @@
             <li><span class="check">✓</span> Priority Support</li>
           </ul>
         </div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfF99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-primary w-full">Start Free Trial</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfG99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-primary w-full">Start Free Trial</a>
       </div>
 
       <!-- Agency -->
@@ -79,8 +79,20 @@
             <li><span class="check">✓</span> Dedicated Manager</li>
           </ul>
         </div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfF99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-secondary w-full">Contact Sales</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoJ8Vy6jGyb2p5_aAg6ETYRJvRfG99nORYZpnezoTPyKvPfA/viewform" target="_blank" class="btn btn-secondary w-full">Contact Sales</a>
       </div>
+    </div>
+
+    <!-- Pricing Note (Restored) -->
+    <div class="pricing-note reveal-on-scroll">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5" />
+        <path d="M10 6v4M10 13v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <p>
+        <strong>Early access pricing.</strong> Lock in these rates during beta.
+        Prices may increase at launch.
+      </p>
     </div>
   </div>
 </section>
@@ -208,4 +220,34 @@
   .dim { opacity: 0.5; text-decoration: line-through; }
 
   .w-full { width: 100%; }
+
+  /* Pricing Note */
+  .pricing-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 3rem auto 0;
+    padding: 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .pricing-note svg {
+    flex-shrink: 0;
+    color: var(--accent-glow);
+    margin-top: 2px;
+  }
+
+  .pricing-note p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .pricing-note strong {
+    color: var(--text-primary);
+  }
 </style>

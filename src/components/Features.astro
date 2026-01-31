@@ -79,6 +79,49 @@
         </div>
       </div>
     </div>
+
+    <!-- Comparison Table (Restored) -->
+    <div class="comparison-section reveal-on-scroll">
+      <h3 class="comparison-title">Why switch from the competition?</h3>
+      <div class="comparison-table">
+        <div class="comparison-row header">
+          <span></span>
+          <span>PullLeads</span>
+          <span>Apollo</span>
+          <span>Hunter</span>
+        </div>
+        <div class="comparison-row">
+          <span>Google Maps scraping</span>
+          <span class="yes">✓ Yes</span>
+          <span class="no">✗ No</span>
+          <span class="no">✗ No</span>
+        </div>
+        <div class="comparison-row">
+          <span>Owner/Decision-maker emails</span>
+          <span class="yes">✓ Yes</span>
+          <span class="partial">~ Limited</span>
+          <span class="no">Generic only</span>
+        </div>
+        <div class="comparison-row">
+          <span>Built-in verification</span>
+          <span class="yes">✓ Yes</span>
+          <span class="partial">Extra cost</span>
+          <span class="partial">Basic</span>
+        </div>
+        <div class="comparison-row">
+          <span>Fresh, on-demand data</span>
+          <span class="yes">✓ Yes</span>
+          <span class="no">Database</span>
+          <span class="no">Database</span>
+        </div>
+        <div class="comparison-row">
+          <span>Starting price</span>
+          <span class="highlight">$49/mo</span>
+          <span>$99/mo</span>
+          <span>$49/mo</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -234,6 +277,68 @@
       justify-content: space-between;
     }
     .text-side { flex: 1; }
+  }
+
+  /* Comparison Table */
+  .comparison-section {
+    margin-top: 5rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .comparison-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+  }
+
+  .comparison-table {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.9rem;
+    align-items: center;
+  }
+
+  .comparison-row:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-row.header {
+    background: rgba(255,255,255,0.03);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .comparison-row span:first-child {
+    color: var(--text-secondary);
+  }
+
+  .comparison-row span:not(:first-child) {
+    text-align: center;
+  }
+
+  .yes { color: #34D399; font-weight: 600; }
+  .no { color: var(--text-muted); }
+  .partial { color: #FBBF24; }
+  .highlight { color: var(--accent-glow); font-weight: 700; }
+
+  @media (max-width: 600px) {
+    .comparison-row {
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+    }
   }
 </style>
 

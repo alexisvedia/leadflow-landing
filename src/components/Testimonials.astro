@@ -80,6 +80,26 @@
         </div>
       </div>
     </div>
+
+    <!-- Stats Bar (Restored) -->
+    <div class="stats-bar reveal-on-scroll">
+      <div class="stat-item">
+        <span class="stat-value">2.4M+</span>
+        <span class="stat-label">Leads Generated</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">89%</span>
+        <span class="stat-label">Avg. Deliverability</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">500+</span>
+        <span class="stat-label">Beta Users</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">4.9</span>
+        <span class="stat-label">User Rating</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -155,6 +175,42 @@
 
   .role {
     font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+    padding: 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+  }
+
+  @media (min-width: 768px) {
+    .stats-bar {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-value {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-glow);
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
     color: var(--text-secondary);
   }
 </style>
