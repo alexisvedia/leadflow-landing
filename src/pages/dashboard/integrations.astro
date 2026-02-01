@@ -21,6 +21,13 @@ const { data: integrations } = await supabase
 
 const hubspot = integrations?.find(i => i.provider === 'hubspot');
 const sheets = integrations?.find(i => i.provider === 'google_sheets');
+const salesforce = integrations?.find(i => i.provider === 'salesforce');
+const airtable = integrations?.find(i => i.provider === 'airtable');
+
+// Check for success/error messages in URL
+const url = Astro.url;
+const successParam = url.searchParams.get('success');
+const errorParam = url.searchParams.get('error');
 ---
 
 <Layout title="Integrations | PullLeads">
@@ -45,6 +52,18 @@ const sheets = integrations?.find(i => i.provider === 'google_sheets');
     <main class="integrations-main">
       <h1>Integrations</h1>
       <p class="subtitle">Connect your favorite tools to automatically sync leads.</p>
+
+      {successParam && (
+        <div class="alert alert-success">
+          Successfully connected {successParam}!
+        </div>
+      )}
+
+      {errorParam && (
+        <div class="alert alert-error">
+          Failed to connect: {errorParam.replace(/_/g, ' ')}
+        </div>
+      )}
 
       <div class="integrations-grid">
         <!-- HubSpot -->
@@ -126,6 +145,88 @@ const sheets = integrations?.find(i => i.provider === 'google_sheets');
           </div>
         </div>
 
+        <!-- Salesforce -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon salesforce">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10.2 3.6c1.1-1.2 2.7-2 4.5-2 2.5 0 4.6 1.5 5.5 3.6.7-.3 1.5-.4 2.3-.4 3 0 5.5 2.5 5.5 5.5s-2.5 5.5-5.5 5.5c-.4 0-.7 0-1.1-.1-.8 2-2.7 3.4-5 3.4-1.3 0-2.5-.5-3.4-1.3-1 1.5-2.6 2.4-4.5 2.4-2.3 0-4.3-1.5-5-3.6-.5.1-1 .2-1.5.2C.9 16.8-1 14.9-1 12.5c0-1.9 1.2-3.5 2.9-4.2-.1-.4-.2-.9-.2-1.3 0-2.8 2.2-5 5-5 1.3 0 2.5.5 3.5 1.6z"/>
+              </svg>
+            </div>
+            <div class="integration-info">
+              <h3>Salesforce</h3>
+              <p>Create leads or contacts directly in Salesforce CRM.</p>
+            </div>
+          </div>
+
+          <div class="integration-status">
+            {salesforce?.is_active ? (
+              <span class="status connected">Connected</span>
+            ) : (
+              <span class="status disconnected">Not connected</span>
+            )}
+          </div>
+
+          <div class="integration-actions">
+            {salesforce?.is_active ? (
+              <button class="btn-secondary disconnect-btn" data-provider="salesforce">
+                Disconnect
+              </button>
+            ) : (
+              <button class="btn-primary connect-salesforce-btn">
+                Connect Salesforce
+              </button>
+            )}
+          </div>
+        </div>
+
+        <!-- Airtable -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon airtable">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.992 2L2 6.5v11l9.992 4.5L22 17.5v-11L11.992 2zm0 2.25l7.5 3.375v7.5l-7.5 3.375-7.5-3.375v-7.5l7.5-3.375z"/>
+                <path d="M12 9.75L8.25 12 12 14.25 15.75 12 12 9.75z"/>
+              </svg>
+            </div>
+            <div class="integration-info">
+              <h3>Airtable</h3>
+              <p>Export leads to your Airtable base automatically.</p>
+            </div>
+          </div>
+
+          <div class="integration-status">
+            {airtable?.is_active ? (
+              <span class="status connected">Connected</span>
+            ) : (
+              <span class="status disconnected">Not connected</span>
+            )}
+          </div>
+
+          <div class="integration-actions">
+            {airtable?.is_active ? (
+              <>
+                {airtable.config?.bases && airtable.config.bases.length > 0 && (
+                  <select class="base-select" id="airtable-base-select" data-provider="airtable">
+                    {airtable.config.bases.map((base: any) => (
+                      <option value={base.id} selected={base.id === airtable.config.base_id}>
+                        {base.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                <button class="btn-secondary disconnect-btn" data-provider="airtable">
+                  Disconnect
+                </button>
+              </>
+            ) : (
+              <button class="btn-primary connect-airtable-btn">
+                Connect Airtable
+              </button>
+            )}
+          </div>
+        </div>
+
         <!-- Webhooks -->
         <div class="integration-card">
           <div class="integration-header">
@@ -193,6 +294,41 @@ const sheets = integrations?.find(i => i.provider === 'google_sheets');
           <div class="modal-actions">
             <button class="btn-secondary" id="sheets-cancel">Cancel</button>
             <button class="btn-primary" id="sheets-save">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salesforce Modal -->
+      <div id="salesforce-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <h3>Connect Salesforce</h3>
+          <p>Choose how to connect:</p>
+          <div class="connect-options">
+            <a href="/api/integrations/salesforce" class="btn-primary connect-option">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
+              Connect with OAuth
+            </a>
+            <div class="divider"><span>or</span></div>
+            <div class="manual-connect">
+              <input
+                type="text"
+                id="sf-instance-url"
+                placeholder="https://yourorg.salesforce.com"
+                class="modal-input"
+              />
+              <input
+                type="password"
+                id="sf-access-token"
+                placeholder="Access Token"
+                class="modal-input"
+              />
+              <button class="btn-secondary" id="salesforce-manual-save">Connect Manually</button>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn-secondary" id="salesforce-cancel">Cancel</button>
           </div>
         </div>
       </div>
@@ -370,6 +506,101 @@ const sheets = integrations?.find(i => i.provider === 'google_sheets');
     });
   });
 
+  // Salesforce connection
+  const salesforceModal = document.getElementById('salesforce-modal') as HTMLDivElement;
+  const salesforceCancel = document.getElementById('salesforce-cancel') as HTMLButtonElement;
+  const connectSalesforceBtn = document.querySelector('.connect-salesforce-btn') as HTMLButtonElement;
+  const salesforceManualSave = document.getElementById('salesforce-manual-save') as HTMLButtonElement;
+
+  if (connectSalesforceBtn) {
+    connectSalesforceBtn.addEventListener('click', () => {
+      salesforceModal.style.display = 'flex';
+    });
+  }
+
+  salesforceCancel?.addEventListener('click', () => {
+    salesforceModal.style.display = 'none';
+  });
+
+  salesforceManualSave?.addEventListener('click', async () => {
+    const instanceUrl = (document.getElementById('sf-instance-url') as HTMLInputElement).value.trim();
+    const accessToken = (document.getElementById('sf-access-token') as HTMLInputElement).value.trim();
+
+    if (!instanceUrl || !accessToken) {
+      alert('Please enter both instance URL and access token');
+      return;
+    }
+
+    salesforceManualSave.disabled = true;
+    salesforceManualSave.textContent = 'Connecting...';
+
+    try {
+      const session = await getSession();
+      if (!session) {
+        window.location.href = '/auth/login';
+        return;
+      }
+
+      const response = await fetch('/api/integrations/salesforce', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ accessToken, instanceUrl }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        alert(result.error || 'Failed to connect Salesforce');
+      }
+    } catch (error) {
+      console.error('Salesforce connect error:', error);
+      alert('Failed to connect Salesforce');
+    } finally {
+      salesforceManualSave.disabled = false;
+      salesforceManualSave.textContent = 'Connect Manually';
+    }
+  });
+
+  // Airtable connection (OAuth)
+  const connectAirtableBtn = document.querySelector('.connect-airtable-btn') as HTMLButtonElement;
+
+  if (connectAirtableBtn) {
+    connectAirtableBtn.addEventListener('click', () => {
+      // Redirect to OAuth flow
+      window.location.href = '/api/integrations/airtable';
+    });
+  }
+
+  // Airtable base selection
+  const airtableBaseSelect = document.getElementById('airtable-base-select') as HTMLSelectElement;
+
+  if (airtableBaseSelect) {
+    airtableBaseSelect.addEventListener('change', async () => {
+      const baseId = airtableBaseSelect.value;
+
+      try {
+        const session = await getSession();
+        if (!session) return;
+
+        await fetch('/api/integrations/airtable', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ baseId }),
+        });
+      } catch (error) {
+        console.error('Airtable base update error:', error);
+      }
+    });
+  }
+
   // Close modals on backdrop click
   document.querySelectorAll('.modal').forEach((modal) => {
     modal.addEventListener('click', (e) => {
@@ -497,6 +728,92 @@ const sheets = integrations?.find(i => i.provider === 'google_sheets');
   .integration-icon.webhook {
     background: rgba(147, 51, 234, 0.15);
     color: #9333ea;
+  }
+
+  .integration-icon.salesforce {
+    background: rgba(0, 161, 224, 0.15);
+    color: #00a1e0;
+  }
+
+  .integration-icon.airtable {
+    background: rgba(252, 180, 0, 0.15);
+    color: #fcb400;
+  }
+
+  /* Alerts */
+  .alert {
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .alert-success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+  }
+
+  .alert-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+  }
+
+  /* Base select */
+  .base-select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: white;
+    min-width: 150px;
+  }
+
+  .base-select option {
+    background: #1a1a1a;
+  }
+
+  /* Connect options */
+  .connect-options {
+    margin: 1rem 0;
+  }
+
+  .connect-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.875rem;
+    text-decoration: none;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.8rem;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .divider span {
+    padding: 0 1rem;
+  }
+
+  .manual-connect {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .integration-info h3 {

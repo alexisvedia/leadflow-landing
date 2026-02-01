@@ -102,7 +102,7 @@ CREATE INDEX IF NOT EXISTS idx_extractions_status ON public.extractions(status);
 CREATE TABLE IF NOT EXISTS public.integrations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users ON DELETE CASCADE NOT NULL,
-  provider TEXT NOT NULL CHECK (provider IN ('hubspot', 'google_sheets', 'webhook')),
+  provider TEXT NOT NULL CHECK (provider IN ('hubspot', 'google_sheets', 'webhook', 'salesforce', 'airtable')),
   access_token TEXT,
   refresh_token TEXT,
   token_expires_at TIMESTAMPTZ,
@@ -112,6 +112,10 @@ CREATE TABLE IF NOT EXISTS public.integrations (
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, provider)
 );
+
+-- For existing installations, add new providers to the check constraint
+-- ALTER TABLE public.integrations DROP CONSTRAINT IF EXISTS integrations_provider_check;
+-- ALTER TABLE public.integrations ADD CONSTRAINT integrations_provider_check CHECK (provider IN ('hubspot', 'google_sheets', 'webhook', 'salesforce', 'airtable'));
 
 -- Enable RLS
 ALTER TABLE public.integrations ENABLE ROW LEVEL SECURITY;

@@ -1,0 +1,808 @@
+---
+export const prerender = false;
+
+import Layout from '../../../layouts/Layout.astro';
+import { supabase } from '../../../lib/supabase';
+
+// Check authentication
+const { data: { session } } = await supabase.auth.getSession();
+
+if (!session) {
+  return Astro.redirect('/auth/login');
+}
+
+const user = session.user;
+const { id } = Astro.params;
+
+// Get extraction details
+const { data: extraction, error } = await supabase
+  .from('extractions')
+  .select('*')
+  .eq('id', id)
+  .eq('user_id', user.id)
+  .single();
+
+if (error || !extraction) {
+  return Astro.redirect('/dashboard');
+}
+
+// Parse leads from result_data
+const leads = extraction.result_data?.leads || extraction.result_data || [];
+const isArray = Array.isArray(leads);
+const leadsArray = isArray ? leads : [];
+---
+
+<Layout title={`Extraction: ${extraction.query} | PullLeads`}>
+  <div class="dashboard">
+    <!-- Header -->
+    <header class="dash-header">
+      <div class="logo">
+        <a href="/">PullLeads</a>
+      </div>
+      <nav class="dash-nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/dashboard/extract">Extract Leads</a>
+        <a href="/dashboard/integrations">Integrations</a>
+      </nav>
+      <div class="user-menu">
+        <span class="user-email">{user.email}</span>
+        <a href="/auth/logout" class="logout-link">Logout</a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="extraction-main">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>/</span>
+        <span>Extraction Details</span>
+      </nav>
+
+      <!-- Extraction Info -->
+      <div class="extraction-header">
+        <div class="extraction-info">
+          <h1>{extraction.query}</h1>
+          <p class="extraction-meta">
+            <span class="location">{extraction.location}</span>
+            <span class="separator">•</span>
+            <span class="date">{new Date(extraction.created_at).toLocaleDateString()}</span>
+            <span class="separator">•</span>
+            <span class={`status-badge ${extraction.status}`}>{extraction.status}</span>
+          </p>
+        </div>
+
+        {extraction.status === 'completed' && leadsArray.length > 0 && (
+          <div class="extraction-actions">
+            <button id="export-csv" class="btn-secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Export CSV
+            </button>
+            <button id="export-json" class="btn-secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              Export JSON
+            </button>
+            <div class="dropdown">
+              <button id="sync-btn" class="btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 12a9 9 0 0 1-9 9m0 0a9 9 0 0 1-9-9m9 9V3m0 0l3 3m-3-3l-3 3"/>
+                </svg>
+                Sync to CRM
+              </button>
+              <div class="dropdown-menu" id="sync-menu" style="display: none;">
+                <button data-target="hubspot">HubSpot</button>
+                <button data-target="salesforce">Salesforce</button>
+                <button data-target="airtable">Airtable</button>
+                <button data-target="sheets">Google Sheets</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Stats -->
+      {extraction.status === 'completed' && (
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat-value">{leadsArray.length}</span>
+            <span class="stat-label">Total Leads</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{leadsArray.filter((l: any) => l.email).length}</span>
+            <span class="stat-label">With Email</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{leadsArray.filter((l: any) => l.phone).length}</span>
+            <span class="stat-label">With Phone</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{leadsArray.filter((l: any) => l.ownerName || l.owner_name).length}</span>
+            <span class="stat-label">Owner Found</span>
+          </div>
+        </div>
+      )}
+
+      <!-- Leads Table -->
+      {extraction.status === 'pending' || extraction.status === 'running' ? (
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <h3>Extraction in progress...</h3>
+          <p>This usually takes 1-5 minutes depending on the number of leads.</p>
+          <p class="hint">This page will auto-refresh when ready.</p>
+        </div>
+      ) : extraction.status === 'failed' ? (
+        <div class="error-state">
+          <h3>Extraction Failed</h3>
+          <p>Something went wrong during the extraction. Your credits have been refunded.</p>
+          <a href="/dashboard/extract" class="btn-primary">Try Again</a>
+        </div>
+      ) : leadsArray.length === 0 ? (
+        <div class="empty-state">
+          <h3>No leads found</h3>
+          <p>The extraction completed but no leads were found for your query.</p>
+          <a href="/dashboard/extract" class="btn-primary">New Extraction</a>
+        </div>
+      ) : (
+        <div class="leads-table-container">
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th>Business Name</th>
+                <th>Owner/Contact</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Website</th>
+                <th>Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leadsArray.slice(0, 100).map((lead: any) => (
+                <tr>
+                  <td>
+                    <div class="business-cell">
+                      <span class="business-name">{lead.name || lead.businessName || lead.business_name || '-'}</span>
+                      <span class="business-address">{lead.address || lead.fullAddress || lead.full_address || ''}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class={`owner-name ${lead.ownerName || lead.owner_name ? 'found' : ''}`}>
+                      {lead.ownerName || lead.owner_name || lead.contactName || lead.contact_name || '-'}
+                    </span>
+                    {(lead.ownerTitle || lead.owner_title) && (
+                      <span class="owner-title">{lead.ownerTitle || lead.owner_title}</span>
+                    )}
+                  </td>
+                  <td>
+                    {lead.email ? (
+                      <a href={`mailto:${lead.email}`} class="email-link">
+                        {lead.email}
+                        {lead.emailVerified || lead.email_verified ? (
+                          <span class="verified-badge" title="Verified">✓</span>
+                        ) : null}
+                      </a>
+                    ) : (
+                      <span class="no-data">-</span>
+                    )}
+                  </td>
+                  <td>
+                    {lead.phone ? (
+                      <a href={`tel:${lead.phone}`} class="phone-link">{lead.phone}</a>
+                    ) : (
+                      <span class="no-data">-</span>
+                    )}
+                  </td>
+                  <td>
+                    {lead.website ? (
+                      <a href={lead.website} target="_blank" rel="noopener noreferrer" class="website-link">
+                        {new URL(lead.website).hostname.replace('www.', '')}
+                      </a>
+                    ) : (
+                      <span class="no-data">-</span>
+                    )}
+                  </td>
+                  <td>
+                    {lead.rating ? (
+                      <span class="rating">
+                        <span class="rating-star">★</span>
+                        {lead.rating}
+                        {lead.reviewsCount || lead.reviews_count ? (
+                          <span class="reviews-count">({lead.reviewsCount || lead.reviews_count})</span>
+                        ) : null}
+                      </span>
+                    ) : (
+                      <span class="no-data">-</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {leadsArray.length > 100 && (
+            <p class="table-note">Showing first 100 leads. Export to see all {leadsArray.length} leads.</p>
+          )}
+        </div>
+      )}
+
+      <!-- Sync Status Message -->
+      <div id="sync-message" class="sync-message" style="display: none;"></div>
+    </main>
+  </div>
+</Layout>
+
+<script define:vars={{ extraction, leadsArray }}>
+  // Auto-refresh if extraction is in progress
+  if (extraction.status === 'pending' || extraction.status === 'running') {
+    setTimeout(() => {
+      window.location.reload();
+    }, 10000); // Refresh every 10 seconds
+  }
+
+  // Export CSV
+  document.getElementById('export-csv')?.addEventListener('click', () => {
+    if (!leadsArray || leadsArray.length === 0) return;
+
+    const headers = ['Business Name', 'Owner Name', 'Owner Title', 'Email', 'Email Verified', 'Phone', 'Website', 'Address', 'Rating', 'Reviews'];
+    const rows = leadsArray.map(lead => [
+      lead.name || lead.businessName || lead.business_name || '',
+      lead.ownerName || lead.owner_name || lead.contactName || lead.contact_name || '',
+      lead.ownerTitle || lead.owner_title || '',
+      lead.email || '',
+      lead.emailVerified || lead.email_verified ? 'Yes' : 'No',
+      lead.phone || '',
+      lead.website || '',
+      lead.address || lead.fullAddress || lead.full_address || '',
+      lead.rating || '',
+      lead.reviewsCount || lead.reviews_count || ''
+    ]);
+
+    const csvContent = [headers, ...rows]
+      .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `leads-${extraction.query}-${extraction.location}.csv`;
+    link.click();
+  });
+
+  // Export JSON
+  document.getElementById('export-json')?.addEventListener('click', () => {
+    if (!leadsArray || leadsArray.length === 0) return;
+
+    const jsonContent = JSON.stringify(leadsArray, null, 2);
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `leads-${extraction.query}-${extraction.location}.json`;
+    link.click();
+  });
+
+  // Sync dropdown
+  const syncBtn = document.getElementById('sync-btn');
+  const syncMenu = document.getElementById('sync-menu');
+
+  syncBtn?.addEventListener('click', () => {
+    if (syncMenu) {
+      syncMenu.style.display = syncMenu.style.display === 'none' ? 'block' : 'none';
+    }
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    if (syncMenu && syncBtn && !syncBtn.contains(e.target) && !syncMenu.contains(e.target)) {
+      syncMenu.style.display = 'none';
+    }
+  });
+
+  // Sync actions
+  syncMenu?.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const target = btn.dataset.target;
+      const syncMessage = document.getElementById('sync-message');
+
+      if (!target || !syncMessage) return;
+
+      syncMenu.style.display = 'none';
+
+      // Show loading
+      syncMessage.innerHTML = `<div class="loading">Syncing to ${target}...</div>`;
+      syncMessage.style.display = 'block';
+
+      try {
+        const response = await fetch(`/api/export/${target}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            extractionId: extraction.id,
+            leads: leadsArray
+          }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          syncMessage.innerHTML = `<div class="success">Successfully synced ${result.count || leadsArray.length} leads to ${target}!</div>`;
+        } else {
+          throw new Error(result.error || `Failed to sync to ${target}`);
+        }
+      } catch (error) {
+        syncMessage.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+      }
+
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        syncMessage.style.display = 'none';
+      }, 5000);
+    });
+  });
+</script>
+
+<style>
+  .dashboard {
+    min-height: 100vh;
+    background: #030304;
+  }
+
+  /* Header */
+  .dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .logo a {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+  }
+
+  .dash-nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .dash-nav a {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+  }
+
+  .dash-nav a:hover {
+    color: white;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .user-email {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .logout-link {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+  }
+
+  /* Main */
+  .extraction-main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: white;
+  }
+
+  /* Extraction Header */
+  .extraction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .extraction-info h1 {
+    font-size: 1.75rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .extraction-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .separator {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .status-badge.pending {
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+  }
+
+  .status-badge.running {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+  }
+
+  .status-badge.completed {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+  }
+
+  .status-badge.failed {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+  }
+
+  /* Actions */
+  .extraction-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: white;
+    color: black;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-secondary:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+
+  /* Dropdown */
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+    min-width: 150px;
+    z-index: 100;
+  }
+
+  .dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .dropdown-menu button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+  }
+
+  /* Stats Row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .stat-value {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Loading/Empty/Error States */
+  .loading-state,
+  .empty-state,
+  .error-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-state h3,
+  .empty-state h3,
+  .error-state h3 {
+    margin: 0 0 0.5rem;
+  }
+
+  .loading-state p,
+  .empty-state p,
+  .error-state p {
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 0.5rem;
+  }
+
+  .hint {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Leads Table */
+  .leads-table-container {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .leads-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .leads-table th,
+  .leads-table td {
+    padding: 0.875rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .leads-table th {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .leads-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .business-cell {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .business-name {
+    font-weight: 500;
+    color: white;
+  }
+
+  .business-address {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.25rem;
+  }
+
+  .owner-name {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .owner-name.found {
+    color: #22c55e;
+    font-weight: 500;
+  }
+
+  .owner-title {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .email-link,
+  .phone-link,
+  .website-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+
+  .email-link:hover,
+  .phone-link:hover,
+  .website-link:hover {
+    color: white;
+    text-decoration: underline;
+  }
+
+  .verified-badge {
+    display: inline-block;
+    margin-left: 0.25rem;
+    color: #22c55e;
+    font-size: 0.75rem;
+  }
+
+  .no-data {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .rating-star {
+    color: #fbbf24;
+  }
+
+  .reviews-count {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .table-note {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Sync Message */
+  .sync-message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .sync-message .loading {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .sync-message .success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    color: #22c55e;
+  }
+
+  .sync-message .error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    color: #ef4444;
+  }
+
+  /* Responsive */
+  @media (max-width: 1000px) {
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .extraction-header {
+      flex-direction: column;
+    }
+
+    .extraction-actions {
+      width: 100%;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .leads-table-container {
+      overflow-x: auto;
+    }
+
+    .leads-table {
+      min-width: 800px;
+    }
+
+    .stats-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

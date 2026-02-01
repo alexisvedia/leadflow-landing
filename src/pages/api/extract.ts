@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
+import { checkRateLimit, rateLimitErrorResponse, rateLimitHeaders, RATE_LIMITS } from '../../lib/rate-limiter';
 
 // Lazy initialization to avoid build-time errors
 let supabase: ReturnType<typeof createClient> | null = null;
@@ -46,6 +47,12 @@ export const POST: APIRoute = async ({ request }) => {
         status: 401,
         headers: { 'Content-Type': 'application/json' },
       });
+    }
+
+    // Rate limiting per user
+    const rateLimitResult = checkRateLimit(user.id, RATE_LIMITS.extract);
+    if (!rateLimitResult.allowed) {
+      return rateLimitErrorResponse(rateLimitResult);
     }
 
     // Get request body
@@ -146,7 +153,9 @@ export const POST: APIRoute = async ({ request }) => {
       limit: leadsRequested,
       enrichMode: enrichMode || 'name-search',
       skipEnrichment: false,
-      skipVerification: true,
+      skipVerification: false, // Enable email verification for 90%+ deliverability
+      // Configure webhook for async results
+      webhookUrl: `${new URL(request.url).origin}/api/webhook/apify`,
     };
 
     try {
@@ -185,7 +194,10 @@ export const POST: APIRoute = async ({ request }) => {
         creditsRemaining: subscription.credits_remaining - leadsRequested,
       }), {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...rateLimitHeaders(rateLimitResult),
+        },
       });
 
     } catch (apifyError) {
